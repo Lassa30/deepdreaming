@@ -42,9 +42,6 @@ It just became even more crazy
 *Parameters:*
 - [Check in the notebook](deepdream-starter.ipynb)
 
-### Tricky DeepDream
-> Soon...
-
 ## Installation
 You don’t have to install anything to try `DeepDreaming` — just open one of the [kaggle notebooks](#notebooks) and start playing.
 
