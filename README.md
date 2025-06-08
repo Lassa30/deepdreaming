@@ -49,6 +49,17 @@ You don’t have to install anything to try `DeepDreaming` — just open one of 
 1. Install the ImageNet classes [here](https://gist.github.com/4e1342c10a71981d0b491e1b8227328b.git)
 2. All sample images could be found in [the kaggle dataset](https://www.kaggle.com/datasets/vladislavlassa/deepdream-sample-images)
 3. Notebook in GitHub repo is empty to save your disk space - check kaggle version to see the results
+4. Inside the notebook you have to provide the paths to desired directories. Default settings suits only for the kaggle notebook.
+```python
+IMAGE_NET_CLASSES_PATH = \
+  "/kaggle/working/image_net_classes/imagenet_classes.txt"
+
+INPUT_IMAGES_DIR = \
+  "/kaggle/input/deepdream-sample-images"
+
+OUTPUT_IMAGES_DIR = \
+  "/kaggle/working/output"
+```
 
 ## Acknowledgements
 - Google initial DeepDream implementation: [GitHub](https://github.com/google/deepdream/tree/master)
