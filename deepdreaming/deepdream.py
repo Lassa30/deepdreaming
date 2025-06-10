@@ -60,9 +60,6 @@ class DeepDream:
                 loss = torch.mean(torch.stack(losses))
                 loss.backward()
 
-            if input_tensor.grad is not None:
-                input_tensor.grad = torch.nn.functional.normalize(input_tensor.grad, p=2, dim=2)
-
             optimizer.step()
 
     def dream(
@@ -88,8 +85,6 @@ class DeepDream:
             input_tensor = img.proc.to_tensor(input_img).to(self.device)
 
             input_tensor = random_shift.shift(input_tensor)
-
-            # assert any(old != input_tensor)
 
             #####################################################
             print("Input image shape")
@@ -118,7 +113,7 @@ class DeepDream:
 
         self.remove_hooks()
         # Post-processing
-        output_tensor = torch.sigmoid(input_tensor.detach().clone())
+        output_tensor = input_tensor.detach().clone()
         out = img.proc.to_image(output_tensor)
         assert out is not None, "Output image is None somehow"
         out = img.proc.discard_pre_processing(out)
