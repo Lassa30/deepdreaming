@@ -23,8 +23,6 @@ def to_tensor(image) -> torch.Tensor:
 
 
 def to_image(tensor):
-    if tensor is None:
-        return None
     image = tensor.squeeze(0).permute(1, 2, 0)
     return image.detach().cpu().numpy()
 
@@ -32,4 +30,8 @@ def to_image(tensor):
 def to_cv(image):
     image = (image * 255).clip(0, 255).astype(np.uint8)
     image = cv.cvtColor(image, cv.COLOR_RGB2BGR)
+    return image
+
+def reshape_image(image, shape):
+    image = cv.resize(image, (shape[1], shape[0]))
     return image
