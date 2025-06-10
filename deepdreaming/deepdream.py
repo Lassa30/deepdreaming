@@ -84,7 +84,7 @@ class DeepDream:
         for new_shape in pyramid.Pyramid(input_image.shape, image_pyramid_layers, image_pyramid_ratio):
 
             input_img = img.proc.pre_process_image(input_image)
-            input_img = img.proc.reshape_image(input_img, (new_shape[1], new_shape[0]))
+            input_img = img.proc.reshape_image(input_img, new_shape)
             input_tensor = img.proc.to_tensor(input_img).to(self.device)
 
             input_tensor = random_shift.shift(input_tensor)
@@ -99,7 +99,7 @@ class DeepDream:
             reference_tensor = None
             if reference_image is not None:
                 reference_img = img.proc.pre_process_image(reference_image)
-                reference_img = img.proc.reshape_image(reference_image, (new_shape[1], new_shape[0]))
+                reference_img = img.proc.reshape_image(reference_image, new_shape)
 
                 reference_tensor = img.proc.to_tensor(reference_img).to(self.device)
 
