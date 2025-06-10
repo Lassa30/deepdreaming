@@ -2,7 +2,7 @@ import numpy as np
 
 
 class Pyramid:
-    MIN_SIZE = 28  # the least possible height or width possible for the image
+    MIN_SIZE = 32  # the least possible height or width possible for the image
 
     def __init__(self, shape, layers, ratio):
         """

@@ -77,10 +77,9 @@ class DeepDream:
         self.register_hooks()
 
         random_shift = shift.RandomShift(shift_size)
+        input_img = img.proc.pre_process_image(input_image)
         print("IMAGE PYRAMID RUNNING")
         for new_shape in pyramid.Pyramid(input_image.shape, image_pyramid_layers, image_pyramid_ratio):
-
-            input_img = img.proc.pre_process_image(input_image)
             input_img = img.proc.reshape_image(input_img, new_shape)
             input_tensor = img.proc.to_tensor(input_img).to(self.device)
 
@@ -105,25 +104,22 @@ class DeepDream:
             self.gradient_ascend(optimizer_class, input_tensor, ref_activations, learning_rate, num_iterations)
 
             input_tensor = random_shift.shift_back(input_tensor)
+            input_img = img.proc.to_image(input_tensor)
             if reference_tensor is not None:
                 reference_tensor = random_shift.shift_back(reference_tensor)
             random_shift.generate()
-
         print("IMAGE PYRAMID STOPPED")
 
         self.remove_hooks()
+
         # Post-processing
         output_tensor = input_tensor.detach().clone()
         out = img.proc.to_image(output_tensor)
-        assert out is not None, "Output image is None somehow"
-        out = img.proc.discard_pre_processing(out)
 
-        # Normalize per channel
-        for c in range(out.shape[-1]):
-            channel = out[..., c]
-            min_val = channel.min()
-            max_val = channel.max()
-            out[..., c] = (channel - min_val) / (max_val - min_val + 1e-8)
+        assert out is not None, "Output image is None somehow"
+
+        out = img.proc.discard_pre_processing(out)
+        out = np.clip(out, 0.0, 1.0)
 
         return out
 
