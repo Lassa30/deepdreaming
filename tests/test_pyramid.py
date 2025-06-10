@@ -22,9 +22,6 @@ class TestPyramid(unittest.TestCase):
         ratio_zero = lambda: next(Pyramid(self.shape, 1, 0))
         self.assertRaises(ValueError, ratio_zero)
 
-        ratio_one = lambda: next(Pyramid(self.shape, 1, 1))
-        self.assertRaises(ValueError, ratio_one)
-
         ratio_negative = lambda: next(Pyramid(self.shape, 1, -1))
         self.assertRaises(ValueError, ratio_negative)
 

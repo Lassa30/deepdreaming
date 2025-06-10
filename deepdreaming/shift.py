@@ -16,12 +16,9 @@ class RandomShift:
 
     def shift(self, tensor: torch.Tensor):
         with torch.no_grad():
-            shifted = torch.roll(tensor, shifts=(self.horizontal, self.vertical), dims=(2, 3))
-            shifted.requires_grad = True
-            return shifted
+            tensor = torch.roll(tensor, shifts=(self.horizontal, self.vertical), dims=(2, 3))
 
     def shift_back(self, tensor: torch.Tensor):
         self.reverse()
-        result = self.shift(tensor)
+        self.shift(tensor)
         self.reverse()
-        return result
