@@ -5,6 +5,7 @@ import numpy as np
 
 from ..constants import IMAGE_NET_MEAN, IMAGE_NET_STD
 from ..utils import return_none
+print(IMAGE_NET_MEAN)
 
 
 @return_none

@@ -1,7 +1,7 @@
 import numpy as np
 
 
-class Pyramid:
+class ImagePyramid:
     """Image pyramid iterator that generates progressively smaller shapes for multi-scale processing.
 
     Used in DeepDream to process images at multiple resolutions, starting from smallest
@@ -57,7 +57,7 @@ class Pyramid:
         """
         while self.exponent >= 0:
             next_shape = np.round(np.float32(self.shape[:2]) * self.ratio**self.exponent).astype(np.int32)
-            if next_shape.min() < Pyramid.MIN_SIZE:
+            if next_shape.min() < ImagePyramid.MIN_SIZE:
                 raise RuntimeError(
                     """
                     The smallest size of the pyramid is exceeded. 

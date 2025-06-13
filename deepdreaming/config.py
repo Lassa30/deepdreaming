@@ -23,8 +23,8 @@ class DreamConfig:
     """
 
     # -- General --
-    learning_rate: float = 0.07
-    num_iterations: int = 10
+    learning_rate: float = 0.09
+    num_iter: int = 10
     optimizer_class: type = torch.optim.Adam
 
     # -- Norm --

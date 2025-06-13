@@ -22,11 +22,11 @@ class DeepDream:
 
         Args:
             model (torch.nn.Module): Pre-trained PyTorch model (e.g., VGG, ResNet) to use
-                                   for feature extraction. Model should be in eval mode.
+                for feature extraction. Model should be in eval mode and better with gradients disabled.
             layers (list[str]): List of layer names to target for activation maximization.
-                              Layer names should follow PyTorch module naming convention.
-                              Examples: ["features.25", "features.29"] for VGG,
-                                       ["layer2[3].relu", "layer3[5].conv1"] for ResNet.
+                Layer names should follow PyTorch module naming convention.
+                Examples: ["features[25]", "features[29]"] for VGG,
+                          ["layer2[3].relu", "layer3[5].conv1"] for ResNet.
 
         Note:
             The model will be used to extract features at specified layers during the
@@ -99,22 +99,45 @@ class DeepDream:
         """
         self._register_hooks()
 
-        random_shift = shift.RandomShift(config.shift_size)
         input_img = img.proc.pre_process_image(input_image)
         reference_img = img.proc.pre_process_image(reference_image)
 
-        for new_shape in pyramid.Pyramid(input_image.shape, config.pyramid_layers, config.pyramid_ratio):
+        random_shift = shift.RandomShift(config.shift_size)
+        image_pyramid = pyramid.ImagePyramid(input_image.shape, config.pyramid_layers, config.pyramid_ratio)
+
+        for new_shape in image_pyramid:
             input_img = img.proc.reshape_image(input_img, new_shape)
             input_tensor = img.proc.to_tensor(input_img).requires_grad_(True)
 
             reference_img = img.proc.reshape_image(reference_image, new_shape)
             reference_tensor = img.proc.to_tensor(reference_img)
 
-            optimizer = config.optimizer_class([input_tensor], lr=config.learning_rate, maximize=True)
-            for _ in range(config.num_iterations):
+            current_layer = image_pyramid.exponent + 2
+            layer_iterations = int(config.num_iter * np.log2(current_layer))
+            layer_iterations = max(layer_iterations, config.num_iter)
+            learning_rate = config.learning_rate * (1.1 ** -(current_layer - 1))
+            print("DEBUG", "iterations, learning_rate:", layer_iterations, learning_rate, sep="\n\t")
+
+            optimizer = config.optimizer_class([input_tensor], lr=learning_rate, maximize=True)
+
+            for iteration in range(max(layer_iterations, config.num_iter)):
                 DeepDream._shift_tensors(input_tensor, reference_tensor, random_shift.shift)
 
                 self._gradient_ascend_step(optimizer, input_tensor, reference_tensor, config)
+
+                # print("img and grad shapes")
+                # print(input_tensor.shape, '\n', input_tensor.grad.data.shape, end='')
+                # import matplotlib.pyplot as plt
+                # grad, image = img.proc.to_image(input_tensor), img.proc.to_image(input_tensor.grad.data)
+                # fig, axis = plt.subplots(1, 3, figsize=(8, 8))
+                # axis[0].set_title(f"{iteration}, {image.shape}")
+                # axis[2].hist(grad.flatten(), bins=50)
+                # grad, image = (grad - grad.min())/(grad.max() - grad.min()), np.clip(image, 0, 1)
+                # axis = axis.flatten()
+                # axis[0].imshow(grad)
+                # axis[1].imshow(image)
+                # fig.tight_layout()
+                # print("-"*60)
 
                 DeepDream._shift_tensors(input_tensor, reference_tensor, random_shift.shift_back)
 
@@ -149,10 +172,9 @@ class DeepDream:
             loss = torch.mean(torch.stack(losses))
             loss.backward()
 
-        if config.gradient_norm:
-            gradient_normalization(input_tensor, config)
-        if config.gradient_smooth:
-            gradient_smoothing(input_tensor, config)
+        # No configuration -- works well everytime
+        gradient_smoothing(input_tensor)
+        gradient_normalization(input_tensor)
 
         optimizer.step()
 
@@ -223,12 +245,12 @@ class DeepDream:
         return ref_activations
 
 
-def gradient_normalization(input_tensor, config: DreamConfig = DreamConfig()):
+def gradient_normalization(input_tensor):
     """Normalize gradients to unit norm for more stable optimization."""
     with torch.no_grad():
-        input_tensor.grad.data.copy_(torch.nn.functional.normalize(input_tensor.grad.data, p=config.norm, dim=0))
+        input_tensor.grad.data.copy_(torch.nn.functional.normalize(input_tensor.grad.data, p=2, dim=0))
 
 
-def gradient_smoothing(input_tensor, config: DreamConfig = DreamConfig()):
+def gradient_smoothing(input_tensor):
     """Apply smoothing to gradients to reduce artifacts (placeholder implementation)."""
-    print("Smoothing placeholder")
+    print("Applying Gradient Smoothing -- placeholder")
