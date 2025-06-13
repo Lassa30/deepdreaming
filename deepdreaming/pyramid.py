@@ -2,17 +2,29 @@ import numpy as np
 
 
 class Pyramid:
+    """Image pyramid iterator that generates progressively smaller shapes for multi-scale processing.
+
+    Used in DeepDream to process images at multiple resolutions, starting from smallest
+    and working up to full size. This creates more coherent and detailed dream patterns.
+
+    Note: This iterator returns shapes (height, width) tuples, not actual resized images.
+    """
+
     MIN_SIZE = 32  # the least possible height or width possible for the image
 
     def __init__(self, shape, layers, ratio):
-        """
-        shape: (h, w)
-            initial shape of the image
-        layers: int
-            number of layers of the Image Pyramid
-        ratio: float
-            ratio = p_i / p_{i+1}, where p = {p_1, p_2, ... , p_l}, shapes of the pyramid layers
-            0 < ratio < 1 -- should be satisfied i.e. next layer should be smaller then the current
+        """Initialize pyramid with image shape and scaling parameters.
+
+        Args:
+            shape (tuple): Initial image shape as (height, width) or (height, width, channels).
+                          Only first two dimensions (h, w) are used for pyramid calculation.
+            layers (int): Number of pyramid layers to generate. Must be >= 1.
+            ratio (float): Scale ratio between consecutive layers, where 0 < ratio < 1.
+                          Each layer is ratio times smaller than the previous.
+                          E.g., ratio=0.75 means each layer is 75% the size of the previous.
+
+        Raises:
+            ValueError: If shape contains non-integer values, layers < 1, or ratio not in (0,1).
         """
         self.shape = shape
         self.ratio = ratio
@@ -26,9 +38,23 @@ class Pyramid:
             raise ValueError("Ratio of the image pyramid should be 0 < ratio < 1")
 
     def __iter__(self):
+        """Return self as iterator."""
         return self
 
     def __next__(self):
+        """Generate next pyramid layer shape.
+
+        Returns:
+            np.ndarray: Shape array of format [height, width] for the next pyramid layer.
+                       Shapes are generated from smallest to largest (ascending order).
+
+        Raises:
+            RuntimeError: If calculated shape would be smaller than MIN_SIZE pixels.
+            StopIteration: When all pyramid layers have been generated.
+
+        Note:
+            Returns shape tuples only - actual image resizing must be done separately.
+        """
         while self.exponent >= 0:
             next_shape = np.round(np.float32(self.shape[:2]) * self.ratio**self.exponent).astype(np.int32)
             if next_shape.min() < Pyramid.MIN_SIZE:

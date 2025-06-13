@@ -7,6 +7,31 @@ from ..constants import IMAGE_NET_MEAN, IMAGE_NET_STD
 
 
 def read_image(image_path, target_size=None):
+    """Read and preprocess image file for DeepDream processing.
+    
+    Args:
+        image_path (str): Path to the image file to read.
+        target_size (tuple, optional): Target size as (height, width, channels).
+                                     If provided, image will be resized to (height, width).
+                                     The channels dimension is ignored during resizing.
+    
+    Returns:
+        np.ndarray: Preprocessed image as np.float32 array with shape (H, W, C) 
+                   and pixel values normalized to [0, 1] range. Color format is RGB.
+    
+    Raises:
+        AssertionError: If image_path does not exist.
+        Exception: If target_size is not a tuple.
+    
+    Note:
+        This function automatically converts BGR (OpenCV format) to RGB and normalizes
+        pixel values from [0, 255] to [0, 1] range. Output format is compatible with
+        DeepDream.dream() method requirements.
+    
+    Examples:
+        >>> image = read_image("photo.jpg")  # Load image at original size
+        >>> image = read_image("photo.jpg", (224, 224, 3))  # Resize to 224x224
+    """
     assert os.path.exists(image_path), f"Invalid image path: {image_path}\nCurrent directory is: {os.getcwd()}"
 
     image = cv.imread(image_path)[:, :, ::-1]  # BGR to RGB
