@@ -5,10 +5,12 @@ import numpy as np
 class RandomShift:
     def __init__(self, shift_size):
         self.shift_size = shift_size
-        self.horizontal, self.vertical = self.generate()
-    
-    def generate(self):
-        return np.random.randint(-self.shift_size, self.shift_size + 1, 2)
+        self.horizontal, self.vertical = -shift_size, shift_size
+        self.update_random_shift()
+
+    def update_random_shift(self):
+        new_horizontal, new_vertical = np.random.randint(-self.shift_size, self.shift_size + 1, 2)
+        self.horizontal, self.vertical = new_horizontal, new_vertical
 
     def reverse(self):
         self.horizontal *= -1

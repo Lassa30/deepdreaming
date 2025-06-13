@@ -7,9 +7,7 @@ from ..constants import IMAGE_NET_MEAN, IMAGE_NET_STD
 
 
 def read_image(image_path, target_size=None):
-    assert os.path.exists(
-        image_path
-    ), f"Invalid image path: {image_path}\nCurrent directory is: {os.getcwd()}"
+    assert os.path.exists(image_path), f"Invalid image path: {image_path}\nCurrent directory is: {os.getcwd()}"
 
     image = cv.imread(image_path)[:, :, ::-1]  # BGR to RGB
 
@@ -19,5 +17,5 @@ def read_image(image_path, target_size=None):
             image = cv.resize(image, (dim2, dim1))
         else:
             raise Exception("Tuple is expected as a target_size argument type.")
-    
+
     return image.astype(np.float32) / 255.0

@@ -11,11 +11,11 @@ from matplotlib import pyplot as plt
 def display_two_img(init, out, figsize=(4, 4)):
     fig, axes = plt.subplots(1, 2, figsize=figsize)
     axes = axes.flatten()
-    
+
     axes[0].imshow(init)
     axes[0].set_title("Initial image")
     axes[0].axis(False)
-    
+
     axes[1].imshow(out)
     axes[1].set_title("After transformation")
     axes[1].axis(False)
@@ -42,9 +42,10 @@ def classify_images(model, sample_images_path, class_labels) -> tuple[list[np.nd
 
     return sample_images, labels
 
+
 def display_images(sample_images: list[np.ndarray], labels: list[str]):
     x, y = two_max_divisors(len(sample_images))
-    fig, axes = plt.subplots(x, y, figsize=(3*y, 3*x))
+    fig, axes = plt.subplots(x, y, figsize=(3 * y, 3 * x))
     axes = axes.flatten()
 
     for idx, (sample_image, class_label) in enumerate(zip(sample_images, labels)):

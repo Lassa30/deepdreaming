@@ -13,4 +13,10 @@ Random shift
 
 KEY
 ---
-- Using VGG16 instead of ResNet is a game changer! The results are much better! But still not good enough in comparison to other deepdreams...
+- Using VGG16 instead of ResNet is a game changer. The results are much better. But still not good enough in comparison to other deepdreams... (<--- it was before fixing bugs mentioned below)
+
+BUGS
+---
+- I didn't update the image after doing the pyramid layer -> the result was poor
+- It became the real "DeepDream" after fixing this bug
+- Not updating the shift: self.horizontal and self.vertical were the same each iteration
