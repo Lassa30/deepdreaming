@@ -3,13 +3,20 @@ import torch
 
 
 @dataclass
+class GradSmoothingMode:
+    BoxSmoothing = "box"
+    GaussianSmoothing = "gaussian"
+    Disable = "no"
+
+
+@dataclass
 class DreamConfig:
     """Configuration settings for DeepDream algorithm.
-    
+
     This dataclass contains all hyperparameters and settings needed to control
     the DeepDream generation process, including optimization, image pyramid,
     gradient processing, and augmentation parameters.
-    
+
     Attributes:
         learning_rate (float): Step size for gradient ascent optimization. Defaults to 0.07.
         num_iterations (int): Number of optimization steps per pyramid layer. Defaults to 10.
@@ -32,7 +39,13 @@ class DreamConfig:
     norm: int = 2
 
     # -- Smoothing --
-    gradient_smooth: bool = False
+    grad_smoothing: str = GradSmoothingMode.GaussianSmoothing
+    # params for both smoothers
+    grad_smoothing_kernel_size: int = 3
+    grad_smoothing_padding_mode: str = "reflect"
+    # gaussian ONLY
+    grad_smoothing_gaussian_sigmas: int | float | tuple = (0.5, 1, 1.5)
+    grad_smoothing_gaussian_blending_weights: int | float | tuple | None = None
 
     # -- Other --
     pyramid_layers: int = 5

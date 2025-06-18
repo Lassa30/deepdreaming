@@ -1,7 +1,9 @@
 from . import img
 from . import pyramid
 from . import shift
-from .config import DreamConfig
+from . import smoothing
+from . import utils
+from .config import DreamConfig, GradSmoothingMode
 
 import torch
 import numpy as np
@@ -112,19 +114,20 @@ class DeepDream:
             reference_img = img.proc.reshape_image(reference_image, new_shape)
             reference_tensor = img.proc.to_tensor(reference_img)
 
-            current_layer = image_pyramid.exponent + 2
-            layer_iterations = int(config.num_iter * np.log2(current_layer))
-            layer_iterations = max(layer_iterations, config.num_iter)
-            learning_rate = config.learning_rate * (1.1 ** -(current_layer - 1))
-            print("DEBUG", "iterations, learning_rate:", layer_iterations, learning_rate, sep="\n\t")
+            # current_layer = image_pyramid.exponent + 2
+            # layer_iterations = int(config.num_iter * np.log2(current_layer))
+            # layer_iterations = max(layer_iterations, config.num_iter)
+            # learning_rate = config.learning_rate * (1.2 ** -(current_layer - 1))
+            # print("DEBUG\niterations, learning_rate:", layer_iterations, learning_rate, sep="\n\t")
+            # optimizer = config.optimizer_class([input_tensor], lr=learning_rate, maximize=True)
+            # for iteration in range(max(layer_iterations, config.num_iter)):
 
-            optimizer = config.optimizer_class([input_tensor], lr=learning_rate, maximize=True)
-
-            for iteration in range(max(layer_iterations, config.num_iter)):
+            optimizer = config.optimizer_class([input_tensor], lr=config.learning_rate, maximize=True)
+            for iteration in range(config.num_iter):
                 DeepDream._shift_tensors(input_tensor, reference_tensor, random_shift.shift)
-
                 self._gradient_ascend_step(optimizer, input_tensor, reference_tensor, config)
 
+                # TODO: remove theese lines -- debug only
                 # print("img and grad shapes")
                 # print(input_tensor.shape, '\n', input_tensor.grad.data.shape, end='')
                 # import matplotlib.pyplot as plt
@@ -172,9 +175,9 @@ class DeepDream:
             loss = torch.mean(torch.stack(losses))
             loss.backward()
 
-        # No configuration -- works well everytime
-        gradient_smoothing(input_tensor)
-        gradient_normalization(input_tensor)
+        # Check `config.py` and `smoothing.py` to see how it works
+        self._gradient_smoothing(input_tensor, config)
+        self._gradient_normalization(input_tensor, config)
 
         optimizer.step()
 
@@ -204,9 +207,9 @@ class DeepDream:
     @staticmethod
     def _shift_tensors(input_tensor, reference_tensor, shifter):
         """Apply shift function to input and optional reference tensors."""
-        shifter(input_tensor)
+        input_tensor.data.copy_(shifter(input_tensor))
         if reference_tensor is not None:
-            shifter(reference_tensor)
+            reference_tensor.data.copy_(shifter(reference_tensor))
 
     def _register_hooks(self):
         """Register forward hooks on specified model layers to capture activations."""
@@ -244,13 +247,30 @@ class DeepDream:
         self.activations = []
         return ref_activations
 
+    @staticmethod
+    def _gradient_normalization(input_tensor: torch.Tensor, config: DreamConfig = DreamConfig()):
+        """Normalize gradients to unit norm for more stable optimization."""
+        assert input_tensor.grad is not None, "No gradients are provided for this tensor."
+        with torch.no_grad():
+            input_tensor.grad.data.copy_(torch.nn.functional.normalize(input_tensor.grad.data, p=2, dim=0))
 
-def gradient_normalization(input_tensor):
-    """Normalize gradients to unit norm for more stable optimization."""
-    with torch.no_grad():
-        input_tensor.grad.data.copy_(torch.nn.functional.normalize(input_tensor.grad.data, p=2, dim=0))
-
-
-def gradient_smoothing(input_tensor):
-    """Apply smoothing to gradients to reduce artifacts (placeholder implementation)."""
-    print("Applying Gradient Smoothing -- placeholder")
+    @staticmethod
+    def _gradient_smoothing(input_tensor: torch.Tensor, config: DreamConfig = DreamConfig()):
+        """Apply smoothing to gradients to reduce artifacts (placeholder implementation)."""
+        assert input_tensor.grad is not None, "No gradients are provided for this tensor."
+        with torch.no_grad():
+            match config.grad_smoothing:
+                case GradSmoothingMode.BoxSmoothing:
+                    input_tensor.grad.data.copy_(
+                        smoothing.box_smoothing(input_tensor.grad.data, *utils.get_box_smoothing_params(config))
+                    )
+                case GradSmoothingMode.GaussianSmoothing:
+                    input_tensor.grad.data.copy_(
+                        smoothing.gaussian_smoothing(
+                            input_tensor.grad.data, *utils.get_gaussian_smoothing_params(config)
+                        )
+                    )
+                case GradSmoothingMode.Disable:
+                    pass
+                case _:
+                    assert False, f"Invalid `grad_smoothing` parameter is provided: {config.grad_smoothing}"
