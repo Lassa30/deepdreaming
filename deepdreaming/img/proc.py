@@ -5,16 +5,15 @@ import numpy as np
 
 from ..constants import IMAGE_NET_MEAN, IMAGE_NET_STD
 from ..utils import return_none
-print(IMAGE_NET_MEAN)
 
 
 @return_none
 def pre_process_image(image):
     """Normalize image using ImageNet statistics for neural network input.
-    
+
     Args:
         image (np.ndarray): Input image with values in [0, 1] range and shape (H, W, C).
-    
+
     Returns:
         np.ndarray: Normalized image with ImageNet mean subtracted and scaled by ImageNet std.
                    Values will be approximately in [-2, 2] range after normalization.
@@ -26,10 +25,10 @@ def pre_process_image(image):
 @return_none
 def discard_pre_processing(image):
     """Reverse ImageNet normalization to restore original pixel value range.
-    
+
     Args:
         image (np.ndarray): Normalized image from pre_process_image function.
-    
+
     Returns:
         np.ndarray: Denormalized image with values restored to [0, 1] range.
     """
@@ -40,10 +39,10 @@ def discard_pre_processing(image):
 @return_none
 def to_tensor(image) -> torch.Tensor:
     """Convert numpy image to PyTorch tensor with batch dimension and move to device.
-    
+
     Args:
         image (np.ndarray): Input image with shape (H, W, C) and values in [0, 1].
-    
+
     Returns:
         torch.Tensor: Tensor with shape (1, C, H, W) on appropriate device (GPU if available).
                      Channel order is converted from HWC to CHW format.
@@ -56,10 +55,10 @@ def to_tensor(image) -> torch.Tensor:
 @return_none
 def to_image(tensor):
     """Convert PyTorch tensor back to numpy image format.
-    
+
     Args:
         tensor (torch.Tensor): Input tensor with shape (1, C, H, W) or (C, H, W).
-    
+
     Returns:
         np.ndarray: Image array with shape (H, W, C) on CPU as numpy array.
                    Channel order is converted from CHW to HWC format.
@@ -71,10 +70,10 @@ def to_image(tensor):
 @return_none
 def to_cv(image):
     """Convert image to OpenCV format for saving or display.
-    
+
     Args:
         image (np.ndarray): Input image with values in [0, 1] and RGB channel order.
-    
+
     Returns:
         np.ndarray: Image converted to BGR format with uint8 values in [0, 255] range,
                    ready for OpenCV operations like cv.imwrite().
@@ -87,11 +86,11 @@ def to_cv(image):
 @return_none
 def reshape_image(image, shape):
     """Resize image to specified dimensions using OpenCV.
-    
+
     Args:
         image (np.ndarray): Input image to resize.
         shape (tuple): Target shape as (height, width). Aspect ratio may not be preserved.
-    
+
     Returns:
         np.ndarray: Resized image with new dimensions. Uses linear interpolation.
     """

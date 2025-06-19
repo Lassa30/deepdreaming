@@ -2,7 +2,6 @@ from . import img
 from . import pyramid
 from . import shift
 from . import smoothing
-from . import utils
 from .config import DreamConfig, GradSmoothingMode
 
 import torch

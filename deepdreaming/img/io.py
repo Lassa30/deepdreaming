@@ -1,7 +1,6 @@
 import os
 import cv2 as cv
 import numpy as np
-from torchvision.transforms import ToTensor
 
 
 def read_image(image_path, target_size=None):

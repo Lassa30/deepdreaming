@@ -1,5 +1,4 @@
 import os
-from .config import DreamConfig
 
 
 def read_image_net_classes(filepath):
