@@ -4,4 +4,5 @@ venv
 input
 output
 image_net_classes
-deepdream-starter.ipynb
+deepdream-*.ipynb
+.pytest_cache

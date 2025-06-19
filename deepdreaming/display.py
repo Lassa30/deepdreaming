@@ -1,5 +1,4 @@
-from .img.proc import pre_process_image, to_tensor, discard_pre_processing
-from .img.io import read_image
+from . import img
 from .utils import two_max_divisors
 from .constants import TO_MODEL_SHAPE
 
@@ -66,15 +65,15 @@ def classify_images(
     labels = []
 
     for img_path in sample_images_path:
-        img = read_image(img_path, TO_MODEL_SHAPE)
-        img = pre_process_image(img)
-        img_tensor = to_tensor(img).to(device)
+        image = img.io.read_image(img_path, TO_MODEL_SHAPE)
+        image = img.proc.pre_process_image(image)
+        img_tensor = img.proc.to_tensor(image).to(device)
 
         with torch.no_grad():  # Disable gradient tracking
             output = model(img_tensor)
             output_class = class_labels[output.argmax().item()]
 
-        sample_images.append(discard_pre_processing(img))
+        sample_images.append(img.proc.discard_pre_processing(img))
         labels.append(output_class)
 
     return sample_images, labels

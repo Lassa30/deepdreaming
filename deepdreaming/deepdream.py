@@ -114,36 +114,13 @@ class DeepDream:
             reference_img = img.proc.reshape_image(reference_image, new_shape)
             reference_tensor = img.proc.to_tensor(reference_img)
 
-            # current_layer = image_pyramid.exponent + 2
-            # layer_iterations = int(config.num_iter * np.log2(current_layer))
-            # layer_iterations = max(layer_iterations, config.num_iter)
-            # learning_rate = config.learning_rate * (1.2 ** -(current_layer - 1))
-            # print("DEBUG\niterations, learning_rate:", layer_iterations, learning_rate, sep="\n\t")
-            # optimizer = config.optimizer_class([input_tensor], lr=learning_rate, maximize=True)
-            # for iteration in range(max(layer_iterations, config.num_iter)):
-
             optimizer = config.optimizer_class([input_tensor], lr=config.learning_rate, maximize=True)
-            for iteration in range(config.num_iter):
+            for _ in range(config.num_iter):
                 DeepDream._shift_tensors(input_tensor, reference_tensor, random_shift.shift)
+
                 self._gradient_ascend_step(optimizer, input_tensor, reference_tensor, config)
 
-                # TODO: remove theese lines -- debug only
-                # print("img and grad shapes")
-                # print(input_tensor.shape, '\n', input_tensor.grad.data.shape, end='')
-                # import matplotlib.pyplot as plt
-                # grad, image = img.proc.to_image(input_tensor), img.proc.to_image(input_tensor.grad.data)
-                # fig, axis = plt.subplots(1, 3, figsize=(8, 8))
-                # axis[0].set_title(f"{iteration}, {image.shape}")
-                # axis[2].hist(grad.flatten(), bins=50)
-                # grad, image = (grad - grad.min())/(grad.max() - grad.min()), np.clip(image, 0, 1)
-                # axis = axis.flatten()
-                # axis[0].imshow(grad)
-                # axis[1].imshow(image)
-                # fig.tight_layout()
-                # print("-"*60)
-
                 DeepDream._shift_tensors(input_tensor, reference_tensor, random_shift.shift_back)
-
                 random_shift.update_random_shift()
 
             input_img = img.proc.to_image(input_tensor)
@@ -262,12 +239,12 @@ class DeepDream:
             match config.grad_smoothing:
                 case GradSmoothingMode.BoxSmoothing:
                     input_tensor.grad.data.copy_(
-                        smoothing.box_smoothing(input_tensor.grad.data, *utils.get_box_smoothing_params(config))
+                        smoothing.box_smoothing(input_tensor.grad.data, *smoothing.get_box_smoothing_params(config))
                     )
                 case GradSmoothingMode.GaussianSmoothing:
                     input_tensor.grad.data.copy_(
                         smoothing.gaussian_smoothing(
-                            input_tensor.grad.data, *utils.get_gaussian_smoothing_params(config)
+                            input_tensor.grad.data, *smoothing.get_gaussian_smoothing_params(config)
                         )
                     )
                 case GradSmoothingMode.Disable:

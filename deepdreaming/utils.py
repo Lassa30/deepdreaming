@@ -61,16 +61,3 @@ def return_none(func):
         return func(*args, **kwargs)
 
     return wrapper
-
-
-def get_box_smoothing_params(config: DreamConfig):
-    return config.grad_smoothing_kernel_size, config.grad_smoothing_padding_mode
-
-
-def get_gaussian_smoothing_params(config: DreamConfig):
-    return (
-        config.grad_smoothing_kernel_size,
-        config.grad_smoothing_padding_mode,
-        config.grad_smoothing_gaussian_sigmas,
-        config.grad_smoothing_gaussian_blending_weights,
-    )

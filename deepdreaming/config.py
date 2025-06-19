@@ -18,15 +18,36 @@ class DreamConfig:
     gradient processing, and augmentation parameters.
 
     Attributes:
-        learning_rate (float): Step size for gradient ascent optimization. Defaults to 0.07.
-        num_iterations (int): Number of optimization steps per pyramid layer. Defaults to 10.
+        learning_rate (float): Step size for gradient ascent optimization. Defaults to 0.09.
+        num_iter (int): Number of optimization steps per pyramid layer. Defaults to 10.
         optimizer_class (type): PyTorch optimizer class to use. Defaults to torch.optim.Adam.
         gradient_norm (bool): Whether to normalize gradients to unit norm. Defaults to False.
         norm (int): L-norm type for gradient normalization (1, 2, etc.). Defaults to 2.
-        gradient_smooth (bool): Whether to apply gradient smoothing. Defaults to False.
+        grad_smoothing (str): Mode for gradient smoothing. Options are "box", "gaussian", and "no".
+            Defaults to "gaussian".
+        grad_smoothing_kernel_size (int): Size of the smoothing kernel. Must be an odd integer. Defaults to 3.
+        grad_smoothing_padding_mode (str): Padding mode for smoothing.
+            See `torch.nn.functional.pad` for details. Defaults to "reflect".
+        grad_smoothing_gaussian_sigmas (int | float | tuple): Standard deviation(s) for Gaussian smoothing.
+            A larger sigma results in more blurring. Multiple sigmas can be provided as a tuple,
+            in which case multiple Gaussian kernels are generated and blended together. Defaults to (0.5, 1, 1.5).
+            If `grad_smoothing` is set to "gaussian", this parameter is used.
+        grad_smoothing_gaussian_blending_weights (int | float | tuple | None): Blending weights for multiple
+            Gaussian kernels. If None, all kernels are weighted equally. If not None, the number of blending
+            weights must match the number of sigmas. Defaults to None.
+            If `grad_smoothing` is set to "gaussian", this parameter is used.
         pyramid_layers (int): Number of pyramid layers for multi-scale processing. Defaults to 5.
         pyramid_ratio (float): Scale ratio between pyramid layers (0 < ratio < 1). Defaults to 2/3.
         shift_size (int): Maximum pixel shift for random augmentation. Defaults to 32.
+
+    Note:
+        - When `grad_smoothing` is set to "gaussian", the following restrictions apply:
+            - `grad_smoothing_kernel_size` must be an odd integer.
+            - The number of `grad_smoothing_gaussian_sigmas` and
+              `grad_smoothing_gaussian_blending_weights` must match, if blending weights are provided.
+              See `deepdreaming/smoothing.py` for implementation details and assertions.
+            - If `grad_smoothing_gaussian_blending_weights` don't sum up to 1 then the normalization is implicitly applied.
+              It's better to pass normalized weights to make it explicit.
     """
 
     # -- General --
