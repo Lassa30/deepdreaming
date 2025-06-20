@@ -49,7 +49,7 @@ def show_help():
     st.markdown(
         """
     - **Gradient Normalization** ⚖️: Normalizes the gradients to unit norm for more stable optimization.
-      - *Default*: False
+      - *Default*: True
       - *Effect*: When enabled, helps prevent extreme changes and stabilizes the dreaming process.
     """
     )
@@ -67,7 +67,7 @@ def show_help():
       - *Default*: 3
       - *Effect*: Larger sizes produce more blurring and smoother results.
 
-    ### 🌫️ Gaussian Smoothing Parameters
+    ### ☁️ Gaussian Smoothing Parameters
     These parameters only apply when Gaussian Smoothing is selected:
 
     - **Gaussian Sigmas** 🔍: Standard deviation of the Gaussian distribution. Controls the amount of blurring.
@@ -120,6 +120,7 @@ def show_help():
     - **Model Selection** 🤖: Choose the neural network model for dream generation.
       - *VGG16* 🏛️: A classic architecture with 16 layers, good for consistent, recognizable patterns.
       - *ResNet50* 🏗️: A deeper network with 50 layers that can detect more complex features.
+      - *Inception* 🌀: Google's Inception v3 architecture with mixed path blocks, great for capturing diverse features.
 
     - **Layer Selection** 📚: Individual layers can now be selected using checkboxes!
       - *ReLU layers* ✨: Typically produce more stable and aesthetically pleasing patterns.

@@ -102,14 +102,92 @@ MODEL_LAYERS = {
         "layer4[2].conv2": {"type": "Conv2d", "description": "Block 4.2 3×3 conv (512→512)"},
         "layer4[2].conv3": {"type": "Conv2d", "description": "Block 4.2 1×1 conv (512→2048)"},
     },
-    # We can add Inception later
-    "inception": {},
+    # Add Inception v3 layer definitions
+    # Inception V3 model layers - focusing only on convolutional layers
+    "inception": {
+        # Early layers
+        "Conv2d_1a_3x3.conv": {"type": "Conv2d", "description": "First 3×3 conv (RGB→32) stride 2"},
+        "Conv2d_2a_3x3.conv": {"type": "Conv2d", "description": "Second 3×3 conv (32→32)"},
+        "Conv2d_2b_3x3.conv": {"type": "Conv2d", "description": "Third 3×3 conv (32→64) padding 1"},
+        "Conv2d_3b_1x1.conv": {"type": "Conv2d", "description": "1×1 conv (64→80)"},
+        "Conv2d_4a_3x3.conv": {"type": "Conv2d", "description": "3×3 conv (80→192)"},
+        # Mixed_5b block
+        "Mixed_5b.branch1x1.conv": {"type": "Conv2d", "description": "Mixed_5b 1×1 conv (192→64)"},
+        "Mixed_5b.branch5x5_1.conv": {"type": "Conv2d", "description": "Mixed_5b 1×1 conv (192→48)"},
+        "Mixed_5b.branch5x5_2.conv": {"type": "Conv2d", "description": "Mixed_5b 5×5 conv (48→64) padding 2"},
+        "Mixed_5b.branch3x3dbl_1.conv": {"type": "Conv2d", "description": "Mixed_5b 1×1 conv (192→64)"},
+        "Mixed_5b.branch3x3dbl_2.conv": {"type": "Conv2d", "description": "Mixed_5b 3×3 conv (64→96) padding 1"},
+        "Mixed_5b.branch3x3dbl_3.conv": {"type": "Conv2d", "description": "Mixed_5b 3×3 conv (96→96) padding 1"},
+        "Mixed_5b.branch_pool.conv": {"type": "Conv2d", "description": "Mixed_5b 1×1 conv (192→32)"},
+        # Mixed_5c block
+        "Mixed_5c.branch1x1.conv": {"type": "Conv2d", "description": "Mixed_5c 1×1 conv (256→64)"},
+        "Mixed_5c.branch5x5_1.conv": {"type": "Conv2d", "description": "Mixed_5c 1×1 conv (256→48)"},
+        "Mixed_5c.branch5x5_2.conv": {"type": "Conv2d", "description": "Mixed_5c 5×5 conv (48→64) padding 2"},
+        "Mixed_5c.branch3x3dbl_1.conv": {"type": "Conv2d", "description": "Mixed_5c 1×1 conv (256→64)"},
+        "Mixed_5c.branch3x3dbl_2.conv": {"type": "Conv2d", "description": "Mixed_5c 3×3 conv (64→96) padding 1"},
+        "Mixed_5c.branch3x3dbl_3.conv": {"type": "Conv2d", "description": "Mixed_5c 3×3 conv (96→96) padding 1"},
+        "Mixed_5c.branch_pool.conv": {"type": "Conv2d", "description": "Mixed_5c 1×1 conv (256→64)"},
+        # Mixed_5d block
+        "Mixed_5d.branch1x1.conv": {"type": "Conv2d", "description": "Mixed_5d 1×1 conv (288→64)"},
+        "Mixed_5d.branch5x5_1.conv": {"type": "Conv2d", "description": "Mixed_5d 1×1 conv (288→48)"},
+        "Mixed_5d.branch5x5_2.conv": {"type": "Conv2d", "description": "Mixed_5d 5×5 conv (48→64) padding 2"},
+        "Mixed_5d.branch3x3dbl_1.conv": {"type": "Conv2d", "description": "Mixed_5d 1×1 conv (288→64)"},
+        "Mixed_5d.branch3x3dbl_2.conv": {"type": "Conv2d", "description": "Mixed_5d 3×3 conv (64→96) padding 1"},
+        "Mixed_5d.branch3x3dbl_3.conv": {"type": "Conv2d", "description": "Mixed_5d 3×3 conv (96→96) padding 1"},
+        "Mixed_5d.branch_pool.conv": {"type": "Conv2d", "description": "Mixed_5d 1×1 conv (288→64)"},
+        # Mixed_6a block
+        "Mixed_6a.branch3x3.conv": {"type": "Conv2d", "description": "Mixed_6a 3×3 conv (288→384) stride 2"},
+        "Mixed_6a.branch3x3dbl_1.conv": {"type": "Conv2d", "description": "Mixed_6a 1×1 conv (288→64)"},
+        "Mixed_6a.branch3x3dbl_2.conv": {"type": "Conv2d", "description": "Mixed_6a 3×3 conv (64→96) padding 1"},
+        "Mixed_6a.branch3x3dbl_3.conv": {"type": "Conv2d", "description": "Mixed_6a 3×3 conv (96→96) stride 2"},
+        # Mixed_6b block (selections)
+        "Mixed_6b.branch1x1.conv": {"type": "Conv2d", "description": "Mixed_6b 1×1 conv (768→192)"},
+        "Mixed_6b.branch7x7_1.conv": {"type": "Conv2d", "description": "Mixed_6b 1×1 conv (768→128)"},
+        "Mixed_6b.branch7x7_2.conv": {"type": "Conv2d", "description": "Mixed_6b 1×7 conv (128→128) padding (0,3)"},
+        "Mixed_6b.branch7x7_3.conv": {"type": "Conv2d", "description": "Mixed_6b 7×1 conv (128→192) padding (3,0)"},
+        # Mixed_7a block (selections)
+        "Mixed_7a.branch3x3_1.conv": {"type": "Conv2d", "description": "Mixed_7a 1×1 conv (768→192)"},
+        "Mixed_7a.branch3x3_2.conv": {"type": "Conv2d", "description": "Mixed_7a 3×3 conv (192→320) stride 2"},
+        # Mixed_7b block (selections)
+        "Mixed_7b.branch1x1.conv": {"type": "Conv2d", "description": "Mixed_7b 1×1 conv (1280→320)"},
+        "Mixed_7b.branch3x3_1.conv": {"type": "Conv2d", "description": "Mixed_7b 1×1 conv (1280→384)"},
+        # Mixed_7c block (selections)
+        "Mixed_7c.branch1x1.conv": {"type": "Conv2d", "description": "Mixed_7c 1×1 conv (2048→320)"},
+        "Mixed_7c.branch3x3_1.conv": {"type": "Conv2d", "description": "Mixed_7c 1×1 conv (2048→384)"},
+    },
 }
 
 # Default selected layers for each model (for convenience)
 DEFAULT_SELECTED_LAYERS = {
     "vgg16": ["features[13]", "features[15]", "features[22]", "features[29]"],
     "resnet50": ["layer3[2].relu", "layer3[3].relu", "layer3[4].relu", "layer3[5].relu"],
+    "inception": [
+        "Mixed_5c.branch3x3dbl_1.conv",
+        "Mixed_5c.branch3x3dbl_2.conv",
+        "Mixed_5c.branch3x3dbl_3.conv",
+        "Mixed_5c.branch_pool.conv",
+        "Mixed_5d.branch1x1.conv",
+        "Mixed_5d.branch5x5_1.conv",
+        "Mixed_5d.branch5x5_2.conv",
+        "Mixed_5d.branch3x3dbl_1.conv",
+        "Mixed_5d.branch3x3dbl_2.conv",
+        "Mixed_5d.branch3x3dbl_3.conv",
+        "Mixed_5d.branch_pool.conv",
+        "Mixed_6a.branch3x3.conv",
+        "Mixed_6a.branch3x3dbl_1.conv",
+        "Mixed_6a.branch3x3dbl_2.conv",
+        "Mixed_6a.branch3x3dbl_3.conv",
+        "Mixed_6b.branch1x1.conv",
+        "Mixed_6b.branch7x7_1.conv",
+        "Mixed_6b.branch7x7_2.conv",
+        "Mixed_6b.branch7x7_3.conv",
+        "Mixed_7a.branch3x3_1.conv",
+        "Mixed_7a.branch3x3_2.conv",
+        "Mixed_7b.branch1x1.conv",
+        "Mixed_7b.branch3x3_1.conv",
+        "Mixed_7c.branch1x1.conv",
+        "Mixed_7c.branch3x3_1.conv",
+    ],
 }
 
 

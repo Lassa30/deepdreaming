@@ -21,7 +21,7 @@ class DreamConfig:
         learning_rate (float): Step size for gradient ascent optimization. Defaults to 0.09.
         num_iter (int): Number of optimization steps per pyramid layer. Defaults to 10.
         optimizer_class (type): PyTorch optimizer class to use. Defaults to torch.optim.Adam.
-        gradient_norm (bool): Whether to normalize gradients to unit norm. Defaults to False.
+        gradient_norm (bool): Whether to normalize gradients to unit norm. Defaults to True.
         norm (int): L-norm type for gradient normalization (1, 2, etc.). Defaults to 2.
         grad_smoothing (str): Mode for gradient smoothing. Options are "box", "gaussian", and "no".
             Defaults to "gaussian".
@@ -56,7 +56,7 @@ class DreamConfig:
     optimizer_class: type = torch.optim.Adam
 
     # -- Norm --
-    gradient_norm: bool = False
+    gradient_norm: bool = True
     norm: int = 2
 
     # -- Smoothing --
