@@ -1,6 +1,6 @@
 import streamlit as st
-import sys
 import cv2 as cv
+import sys
 
 sys.path.append("../deepdreaming")
 
