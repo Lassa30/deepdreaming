@@ -1,8 +1,8 @@
-from . import img
-from . import pyramid
-from . import shift
-from . import smoothing
-from .config import DreamConfig, GradSmoothingMode
+from deepdreaming import img
+from deepdreaming import pyramid
+from deepdreaming import shift
+from deepdreaming import smoothing
+from deepdreaming.config import DreamConfig, GradSmoothingMode
 
 import torch
 import numpy as np

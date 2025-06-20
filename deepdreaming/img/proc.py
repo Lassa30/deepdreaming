@@ -3,8 +3,8 @@ from torchvision.transforms import ToTensor
 import cv2 as cv
 import numpy as np
 
-from ..constants import IMAGE_NET_MEAN, IMAGE_NET_STD
-from ..utils import return_none
+from deepdreaming.constants import IMAGE_NET_MEAN, IMAGE_NET_STD
+from deepdreaming.utils import return_none
 
 
 @return_none

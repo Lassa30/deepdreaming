@@ -45,9 +45,9 @@ def validate_blend(sigmas, blending_weigths):
     # fmt: off
     assert len(blending_weigths) == len(sigmas), \
         f"""
-        Different number of sigmas and kernel weights.
-            Input: {len(blending_weigths)}
-            Expected input: {len(sigmas)}
+        Different number of sigmas and blending weights.
+            sigmas: {sigmas}
+            blending_weights: {blending_weigths}
         """
     # fmt: on
 

@@ -4,9 +4,9 @@ import torch
 
 @dataclass
 class GradSmoothingMode:
-    BoxSmoothing = "box"
-    GaussianSmoothing = "gaussian"
-    Disable = "no"
+    BoxSmoothing = "Box Smoothing"
+    GaussianSmoothing = "Gaussian Smoothing"
+    Disable = "No Smoothing"
 
 
 @dataclass
