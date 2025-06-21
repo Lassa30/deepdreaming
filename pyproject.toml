@@ -2,18 +2,15 @@
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
-
-
 [project]
 name = "deepdreaming"
-dynamic = ["version"]
+version = "0.1.0"
 dependencies = [
     "streamlit",
     "torch",
     "torchvision",
     "numpy",
     "matplotlib",
-    "opencv-python",
     "opencv-python-headless",
     "ipykernel",
     "hypothesis[pytest]",
@@ -39,7 +36,7 @@ exclude = [
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["deepdreaming"]
+include = ["deepdreaming", "app"]
 
 [testenv]
 deps = ["pytest", "hypothesis"]

@@ -1,8 +1,5 @@
 import streamlit as st
 import cv2 as cv
-import sys
-
-sys.path.append("../deepdreaming")
 
 from app.help_page import show_help
 from app.ui import (
