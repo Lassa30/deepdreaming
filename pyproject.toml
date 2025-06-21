@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+
+
+[project]
+name = "deepdreaming"
+dynamic = ["version"]
+dependencies = [
+    "streamlit",
+    "torch",
+    "torchvision",
+    "numpy",
+    "matplotlib",
+    "opencv-python",
+    "opencv-python-headless",
+    "ipykernel",
+    "hypothesis[pytest]",
+    "black[jupyter]",
+    "mypy",
+    "ruff",
+    "tox"
+]
+requires-python = ">= 3.8"
+
+[tool.black]
+line-length = 120
+target-version = ['py312']
+
+[tool.ruff]
+line-length = 120
+
+[tool.mypy]
+disable_error_code = ["import-untyped"]
+exclude = [
+    ".venv/",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["deepdreaming"]
+
+[testenv]
+deps = ["pytest", "hypothesis"]
+commands = ["pytest"]

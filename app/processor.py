@@ -14,17 +14,19 @@ from deepdreaming.img import io as img_io
 
 from app.model_handler import get_model_input_size
 
-def process_image(image: Image.Image, config: DreamConfig, model: torch.nn.Module, 
-                 layers: list[str], model_name: str) -> np.ndarray:
+
+def process_image(
+    image: Image.Image, config: DreamConfig, model: torch.nn.Module, layers: list[str], model_name: str
+) -> np.ndarray:
     """Process an image using DeepDream.
-    
+
     Args:
         image (PIL.Image): Input image
         config (DreamConfig): Configuration parameters
         model (torch.nn.Module): Neural network model
         layers (list[str]): Layer identifiers to target
         model_name (str): Model name for input size determination
-        
+
     Returns:
         np.ndarray: Processed dreamed image
     """
@@ -34,10 +36,10 @@ def process_image(image: Image.Image, config: DreamConfig, model: torch.nn.Modul
 
     # Get appropriate input shape for the model
     input_shape = get_model_input_size(model_name)
-    
+
     # Load the image using img_io.read_image
     image_np = img_io.read_image(temp_file_path, input_shape)
-    
+
     # Clean up the temporary file
     os.remove(temp_file_path)
 
@@ -62,43 +64,45 @@ def process_image(image: Image.Image, config: DreamConfig, model: torch.nn.Modul
         else:
             raise e
 
+
 def generate_filename(model_info: str, config: DreamConfig) -> str:
     """Generate a unique, descriptive filename for the dream image.
-    
+
     Args:
         model_info (str): Model information
         config (DreamConfig): Configuration used
-        
+
     Returns:
         str: Generated filename with timestamp
     """
     timestamp = int(time.time())
     filename = f"{model_info}_lr{config.learning_rate}_iter{config.num_iter}"
-    
+
     if config.gradient_norm:
         filename += "_gradnorm"
     if config.grad_smoothing == GradSmoothingMode.GaussianSmoothing:
         filename += "_gauss"
     elif config.grad_smoothing == GradSmoothingMode.BoxSmoothing:
         filename += "_box"
-    
+
     return f"{filename}_{timestamp}.jpg"
+
 
 def prepare_image_for_download(dreamed_image: np.ndarray, initial_size: Tuple[int, int]) -> BytesIO:
     """Resize and prepare the processed image for download.
-    
+
     Args:
         dreamed_image (np.ndarray): Processed image array
         initial_size (tuple): Original image dimensions (width, height)
-        
+
     Returns:
         BytesIO: Image bytes ready for download
     """
     # Resize back to original dimensions
     resized_image = cv.resize(dreamed_image, initial_size)
-    
+
     # Convert to PIL Image and save to bytes
     image_bytes = BytesIO()
     Image.fromarray((resized_image * 255).astype(np.uint8)).save(image_bytes, format="JPEG")
-    
+
     return image_bytes

@@ -1,7 +1,6 @@
 import streamlit as st
 from PIL import Image
 from typing import Optional, Tuple
-import cv2 as cv
 
 from deepdreaming.config import DreamConfig, GradSmoothingMode
 from app.layer_configs import get_layers_by_type, DEFAULT_SELECTED_LAYERS
@@ -178,16 +177,16 @@ def config_ui() -> DreamConfig:
         grad_smoothing_gaussian_blending_weights = tuple(
             st.sidebar.multiselect(
                 "Gaussian Blending Weights",
-                [1, 5, 10, 25, 50, 100, 200, 400, 500, 1000],
-                [100],
+                [1.0, 5.0, 10.0, 25.0, 50.0, 100.0, 200.0, 400.0, 500.0, 1000.0],
+                [1],
                 help="Controls how much each sigma contributes. Higher weights for a sigma increase its influence on the final result.",
             )
         )
-        if len(grad_smoothing_gaussian_blending_weights) == 0:
-            grad_smoothing_gaussian_blending_weights = None
     else:
-        grad_smoothing_gaussian_sigmas = 1
-        grad_smoothing_gaussian_blending_weights = None
+        grad_smoothing_gaussian_sigmas = DreamConfig.grad_smoothing_gaussian_sigmas
+        grad_smoothing_gaussian_blending_weights = tuple(
+            1 / len(grad_smoothing_gaussian_sigmas) for _ in range(len(grad_smoothing_gaussian_sigmas))
+        )
 
     # -- Other --
     st.sidebar.subheader("🔧 Other tricks...")
@@ -222,12 +221,8 @@ def config_ui() -> DreamConfig:
         gradient_norm=gradient_norm,
         grad_smoothing=grad_smoothing,
         grad_smoothing_kernel_size=grad_smoothing_kernel_size,
-        grad_smoothing_gaussian_sigmas=(
-            grad_smoothing_gaussian_sigmas if grad_smoothing == GradSmoothingMode.GaussianSmoothing else 1
-        ),
-        grad_smoothing_gaussian_blending_weights=(
-            grad_smoothing_gaussian_blending_weights if grad_smoothing == GradSmoothingMode.GaussianSmoothing else None
-        ),
+        grad_smoothing_gaussian_sigmas=grad_smoothing_gaussian_sigmas,
+        grad_smoothing_gaussian_blending_weights=grad_smoothing_gaussian_blending_weights,
         pyramid_layers=pyramid_layers,
         pyramid_ratio=pyramid_ratio,
         shift_size=shift_size,

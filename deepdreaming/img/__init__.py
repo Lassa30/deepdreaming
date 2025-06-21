@@ -1,2 +1,1 @@
-from . import io
-from . import proc
+from . import io as io, proc as proc

@@ -100,8 +100,8 @@ def gaussian_smoothing(
     input_tensor: torch.Tensor,
     kernel_size: int = 3,
     padding_mode: str = "reflect",
-    sigmas: int | float | tuple = 2,
-    blending_weights: Optional[tuple | int | float] = None,
+    sigma: tuple[int | float, ...] = (0.5,),
+    blending_weights: Optional[tuple[int | float, ...]] = None,
 ) -> torch.Tensor:
     """Applies Gaussian smoothing to an input tensor.
 
@@ -128,20 +128,18 @@ def gaussian_smoothing(
         torch.Tensor: The smoothed image tensor of the same shape as the input.
     """
     assert kernel_size % 2, "Kernel size must be odd."
-    if not isinstance(sigmas, tuple):
-        sigmas = (sigmas,)
-    if isinstance(blending_weights, int | float | None):
-        blending_weights = tuple(1 / len(sigmas) for _ in range(len(sigmas)))
+    if blending_weights is None:
+        blending_weights = tuple(1 / len(sigma) for _ in range(len(sigma)))
 
     validate_input_shape(input_tensor)
-    validate_blend(sigmas, blending_weights)
+    validate_blend(sigma, blending_weights)
 
     C = input_tensor.shape[1]
     blending_weights = normalize_blend(blending_weights)
 
     kernels = []
-    for sigma in sigmas:
-        kernel = get_gaussian_kernel(kernel_size, sigma)
+    for s in sigma:
+        kernel = get_gaussian_kernel(kernel_size, s)
         kernels.append(kernel)
 
     pad = kernel_size // 2

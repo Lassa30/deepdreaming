@@ -7,7 +7,7 @@ A PyTorch implementation of the [**DeepDream algorithm**](https://en.wikipedia.o
     <img src="assets/tree.png" width="400" height="400" style="margin-right: 10px;"/>
     <div style="display: flex; flex-direction: column; align-items: center; margin: 0 10px;">
       <div style="font-size: 18px; font-weight: bold; margin-bottom: 5px;">Dreaming...</div>
-      <div style="font-size: 24px;">➡️</div>
+      <div style="font-size: 36px;">🔃</div>
     </div>
     <img src="assets/tree_deepdream.png" width="400" height="400" style="margin-left: 10px;"/>
   </div>
@@ -62,15 +62,11 @@ The notebooks in this repository come pre-executed, making them the _quickest wa
 
 ### Kaggle Notebooks
 
-The Kaggle notebooks serve as _interactive tutorials_ that walk you through the implementation step by step. They contain the same content as the GitHub notebooks but with more detailed explanations and no imported code. If you want to understand how everything works under the hood, these are your **best starting point**!
+The Kaggle notebooks serve as _interactive tutorials_ that walk you through the implementation step by step. They contain the same content as the GitHub notebooks but with more detailed explanations and no imported code. If you want to understand how you could possibly implement DeepDream by yourself, these are your **best starting point**!
 
 ### Links
 
-WIP
-
-I am currently working on notebooks... 
-
-1. _[DeepDream Starter](deepdream-starter.ipynb)_ - No Image Pyramid or Gradient Smoothing. Gradient ascent is _all_ you need to start dreaming...
+1. _[DeepDream Starter](1-deepdream-starter.ipynb)_ - No Image Pyramid or Gradient Smoothing. Gradient ascent is _all_ you need to start dreaming...
 
     **[STARTER IMAGES PLACEHOLDER]**
 
@@ -85,7 +81,7 @@ I am currently working on notebooks...
   </a>
 </div>
 
-2. _[DeepDream Tricks](deepdream-tricks.ipynb)_ - Playing with different settings from gradient smoothing to image pyramid!
+2. _[DeepDream Tricks](2-deepdream-tricks.ipynb)_ - Playing with different settings from gradient smoothing to image pyramid!
 
     **[TRICKY IMAGES PLACEHOLDER]**
 
@@ -100,7 +96,7 @@ I am currently working on notebooks...
   </a>
 </div>
 
-3. _[DeepDream Guided](deepdream-guided.ipynb)_ - Discover how we can transfer features from one image to another.
+3. _[DeepDream Guided](3-deepdream-guided.ipynb)_ - Discover how we can transfer features from one image to another.
 
     **[GUIDED IMAGES PLACEHOLDER]**
 

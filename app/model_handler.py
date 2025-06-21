@@ -5,12 +5,13 @@ from typing import Tuple
 # Constants
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
+
 def get_model(model_name: str) -> torch.nn.Module:
     """Load and return the specified pre-trained model.
-    
+
     Args:
         model_name (str): Name of the model to load (VGG16, ResNet50, Inception)
-        
+
     Returns:
         torch.nn.Module: The loaded model in eval mode on the appropriate device
     """
@@ -27,12 +28,13 @@ def get_model(model_name: str) -> torch.nn.Module:
     # Move model to appropriate device
     return model.to(DEVICE)
 
+
 def get_model_input_size(model_name: str) -> Tuple[int, int, int]:
     """Get the appropriate input image size for the specified model.
-    
+
     Args:
         model_name (str): Name of the model
-        
+
     Returns:
         tuple: (height, width, channels) for input images
     """
@@ -41,13 +43,14 @@ def get_model_input_size(model_name: str) -> Tuple[int, int, int]:
     else:
         return (224, 224, 3)
 
+
 def get_model_info(model_name: str, num_layers: int) -> str:
     """Generate model info string for filenames and display.
-    
+
     Args:
         model_name (str): Name of the model
         num_layers (int): Number of selected layers
-        
+
     Returns:
         str: Formatted model information
     """

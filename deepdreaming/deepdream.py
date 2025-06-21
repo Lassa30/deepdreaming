@@ -35,7 +35,8 @@ class DeepDream:
         """
         self.model = model
         self.layers = layers
-        self.hook_handles = {}  # item = {layer, hook_handle}
+
+        self.hook_handles: dict[str, torch.utils.hooks.RemovableHandle] = {}  # item = {layer, hook_handle}
         self.activations: list[torch.Tensor] = []
 
     def dream(
@@ -135,7 +136,7 @@ class DeepDream:
         input_tensor: torch.Tensor,
         reference_tensor: Optional[torch.Tensor] = None,
         config: DreamConfig = DreamConfig(),
-    ):
+    ) -> None:
         """Perform one gradient ascent step to maximize layer activations."""
         self.activations = []
         optimizer.zero_grad()
@@ -158,7 +159,7 @@ class DeepDream:
         optimizer.step()
 
     @staticmethod
-    def _objective_guide(current_acts, guide_acts):
+    def _objective_guide(current_acts, guide_acts) -> list[torch.Tensor]:
         """Compute gradients to guide current activations toward reference activations."""
         gradients = []
         for img_act, ref_act in zip(current_acts, guide_acts):
@@ -181,17 +182,17 @@ class DeepDream:
         return out
 
     @staticmethod
-    def _shift_tensors(input_tensor, reference_tensor, shifter):
+    def _shift_tensors(input_tensor, reference_tensor, shifter) -> None:
         """Apply shift function to input and optional reference tensors."""
         input_tensor.data.copy_(shifter(input_tensor))
         if reference_tensor is not None:
             reference_tensor.data.copy_(shifter(reference_tensor))
 
-    def _register_hooks(self):
+    def _register_hooks(self) -> None:
         """Register forward hooks on specified model layers to capture activations."""
         if self.layers is None:
             return
-        if type(self.layers) == str:
+        if type(self.layers) is str:
             self.layers = [self.layers]
 
         for layer in self.layers:

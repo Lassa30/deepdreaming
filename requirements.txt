@@ -1,7 +1,16 @@
 streamlit
+# machine learning
 torch
 torchvision
 numpy
 matplotlib
 opencv-python
 opencv-python-headless
+ipykernel
+# testing
+hypothesis[pytest]
+# others
+black[jupyter]
+mypy
+ruff
+tox

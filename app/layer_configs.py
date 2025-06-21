@@ -209,6 +209,4 @@ def get_layers_by_type(model_name, layer_type=None):
     if layer_type is None:
         return MODEL_LAYERS[model_name.lower()]
 
-    return {
-        layer_id: info for layer_id, info in MODEL_LAYERS[model_name.lower()].items() if info["type"] == layer_type
-    }
+    return {layer_id: info for layer_id, info in MODEL_LAYERS[model_name.lower()].items() if info["type"] == layer_type}
