@@ -1,6 +1,4 @@
 from dataclasses import dataclass
-from typing import Optional
-
 import torch
 
 
@@ -67,8 +65,8 @@ class DreamConfig:
     grad_smoothing_kernel_size: int = 3
     grad_smoothing_padding_mode: str = "reflect"
     # gaussian ONLY
-    grad_smoothing_gaussian_sigmas: tuple[int | float, ...] = (0.25, 0.5, 1)
-    grad_smoothing_gaussian_blending_weights: Optional[tuple[int | float, ...]] = None
+    grad_smoothing_gaussian_sigmas: tuple[int | float, ...] = (0.5,)
+    grad_smoothing_gaussian_blending_weights: tuple[int | float, ...] = (1.0,)
 
     # -- Other --
     pyramid_layers: int = 5
