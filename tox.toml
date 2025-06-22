@@ -26,8 +26,8 @@ deps = [
     "isort",
 ]
 commands = [
-    ["black", { replace = "posargs", default = ["."], extend = true }],
-    ["isort", { replace = "posargs", default = ["."], extend = true }],
+    ["black", { replace = "posargs", default = ["--check", "."], extend = true }],
+    ["isort", { replace = "posargs", default = ["--check", "."], extend = true }],
 ]
 
 [env.type]
