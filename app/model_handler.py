@@ -1,6 +1,14 @@
-import torch
-from torchvision.models import vgg16, VGG16_Weights, resnet50, ResNet50_Weights, inception_v3, Inception_V3_Weights
 from typing import Tuple
+
+import torch
+from torchvision.models import (
+    Inception_V3_Weights,
+    ResNet50_Weights,
+    VGG16_Weights,
+    inception_v3,
+    resnet50,
+    vgg16,
+)
 
 # Constants
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"

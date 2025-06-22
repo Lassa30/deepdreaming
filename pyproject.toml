@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools"]
+requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -14,16 +14,27 @@ dependencies = [
     "opencv-python-headless",
     "ipykernel",
     "hypothesis[pytest]",
+    "pytest-cov",
     "black[jupyter]",
+    "isort",
     "mypy",
     "ruff",
     "tox"
 ]
 requires-python = ">= 3.10"
 
+[tool.pytest.ini_options]
+addopts = "--cov=deepdreaming"
+testpaths = [
+    "tests",
+]
+
 [tool.black]
 line-length = 120
 target-version = ['py312']
+
+[tool.isort]
+profile = "black"
 
 [tool.ruff]
 line-length = 120

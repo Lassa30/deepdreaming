@@ -1,6 +1,7 @@
-from deepdreaming import smoothing
 import pytest
 import torch
+
+from deepdreaming import smoothing
 
 
 @pytest.mark.parametrize(

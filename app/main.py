@@ -1,18 +1,18 @@
-import streamlit as st
 import cv2 as cv
+import streamlit as st
 
 from app.help_page import show_help
+from app.model_handler import get_model, get_model_info
+from app.processor import generate_filename, prepare_image_for_download, process_image
 from app.ui import (
+    config_ui,
+    create_download_button,
+    display_result,
     display_title,
     get_image_input,
-    model_selection_ui,
     layer_selector_ui,
-    config_ui,
-    display_result,
-    create_download_button,
+    model_selection_ui,
 )
-from app.model_handler import get_model, get_model_info
-from app.processor import process_image, generate_filename, prepare_image_for_download
 
 
 def main():

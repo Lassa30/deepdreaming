@@ -1,5 +1,6 @@
-from deepdreaming.pyramid import ImagePyramid
 import pytest
+
+from deepdreaming.pyramid import ImagePyramid
 
 
 class TestImagePyramid:

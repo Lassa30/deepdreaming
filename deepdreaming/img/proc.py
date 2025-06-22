@@ -1,7 +1,7 @@
-import torch
-from torchvision.transforms import ToTensor
 import cv2 as cv
 import numpy as np
+import torch
+from torchvision.transforms import ToTensor
 
 from deepdreaming.constants import IMAGE_NET_MEAN, IMAGE_NET_STD
 from deepdreaming.utils import return_none

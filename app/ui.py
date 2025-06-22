@@ -1,9 +1,10 @@
-import streamlit as st
-from PIL import Image
 from typing import Optional, Tuple
 
+import streamlit as st
+from PIL import Image
+
+from app.layer_configs import DEFAULT_SELECTED_LAYERS, get_layers_by_type
 from deepdreaming.config import DreamConfig, GradSmoothingMode
-from app.layer_configs import get_layers_by_type, DEFAULT_SELECTED_LAYERS
 
 
 def display_title():

@@ -1,18 +1,18 @@
 import os
-import time
 import tempfile
+import time
+from io import BytesIO
 from typing import Tuple
+
+import cv2 as cv
 import numpy as np
 import torch
-import cv2 as cv
 from PIL import Image
-from io import BytesIO
-
-from deepdreaming.deepdream import DeepDream
-from deepdreaming.config import DreamConfig, GradSmoothingMode
-from deepdreaming.img import io as img_io
 
 from app.model_handler import get_model_input_size
+from deepdreaming.config import DreamConfig, GradSmoothingMode
+from deepdreaming.deepdream import DeepDream
+from deepdreaming.img import io as img_io
 
 
 def process_image(

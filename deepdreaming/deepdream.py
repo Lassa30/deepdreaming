@@ -1,13 +1,11 @@
-from deepdreaming import img
-from deepdreaming import pyramid
-from deepdreaming import shift
-from deepdreaming import smoothing
-from deepdreaming.config import DreamConfig, GradSmoothingMode
-
-import torch
-import numpy as np
-from typing import Optional
 import re
+from typing import Optional
+
+import numpy as np
+import torch
+
+from deepdreaming import img, pyramid, shift, smoothing
+from deepdreaming.config import DreamConfig, GradSmoothingMode
 
 
 class DeepDream:

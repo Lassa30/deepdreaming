@@ -1,12 +1,12 @@
-from . import img
-from .utils import two_max_divisors
-from .constants import TO_MODEL_SHAPE
+from typing import Optional
 
-import torch
 import numpy as np
+import torch
 from matplotlib import pyplot as plt
 
-from typing import Optional
+from . import img
+from .constants import TO_MODEL_SHAPE
+from .utils import two_max_divisors
 
 
 def display_two_img(init, out, figsize=(4, 4)):

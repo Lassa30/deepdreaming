@@ -1,5 +1,5 @@
 requires = ["tox>=4"]
-env_list = ["lint", "type", "3.12"]
+env_list = ["lint", "type", "format", "3.12"]
 
 [env_run_base]
 description = "run unit tests"
@@ -7,15 +7,30 @@ deps = [
     "pytest"
 ]
 commands = [["pytest", { replace = "posargs", default = ["tests"], extend = true }]]
-skip_missing_interperters = false
 
 [env.lint]
 description = "run linters"
 skip_install = false
-deps = ["black"]
-commands = [["black", { replace = "posargs", default = ["."], extend = true} ]]
+deps = [
+    "ruff",
+]
+commands = [
+    ["ruff", "check", { replace = "posargs", default = ["."], extend = true }],
+]
+
+[env.format]
+description = "run code formatters"
+skip_install = false
+deps = [
+    "black",
+    "isort",
+]
+commands = [
+    ["black", { replace = "posargs", default = ["."], extend = true }],
+    ["isort", { replace = "posargs", default = ["."], extend = true }],
+]
 
 [env.type]
 description = "run type checks"
 deps = ["mypy"]
-commands = [["mypy", { replace = "posargs", default = ["."], extend = true} ]]
+commands = [["mypy", { replace = "posargs", default = ["."], extend = true }]]
