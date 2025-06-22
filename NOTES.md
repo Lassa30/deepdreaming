@@ -50,3 +50,12 @@ Random stuff
     fig.tight_layout()
     print("-"*60)
     ```
+
+TODO
+---
+- add tests:
+  - deepdream: **(at least try different configurations using hypothesis)**
+  - img
+- add badges: gh actions + test coverage
+- local notebooks (github notebooks)
+- kaggle notebooks
