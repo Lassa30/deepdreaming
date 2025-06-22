@@ -66,50 +66,11 @@ The Kaggle notebooks serve as _interactive tutorials_ that walk you through the 
 
 ### Links
 
-1. _[DeepDream Starter](1-deepdream-starter.ipynb)_ - No Image Pyramid or Gradient Smoothing. Gradient ascent is _all_ you need to start dreaming...
-
-    **[STARTER IMAGES PLACEHOLDER]**
-
-<div align="center">
-  <a href="https://www.kaggle.com/code/vladislavlassa/deepdream-starter">
-    <img src="https://img.shields.io/badge/Kaggle-DeepDream%20Starter-blue?logo=kaggle"
-    alt="DeepDream Starter"/>
-  </a>
-  <a href="deepdream-starter.ipynb">
-    <img src="https://img.shields.io/badge/GitHub-DeepDream%20Starter-green?logo=github"
-    alt="DeepDream Starter GitHub"/>
-  </a>
-</div>
-
-2. _[DeepDream Tricks](2-deepdream-tricks.ipynb)_ - Playing with different settings from gradient smoothing to image pyramid!
-
-    **[TRICKY IMAGES PLACEHOLDER]**
-
-<div align="center">
-  <a href="https://www.kaggle.com/code/vladislavlassa/deepdream-tricks">
-    <img src="https://img.shields.io/badge/Kaggle-DeepDream%20Tricks-blue?logo=kaggle"
-    alt="DeepDream Tricks"/>
-  </a>
-  <a href="deepdream-tricks.ipynb">
-    <img src="https://img.shields.io/badge/GitHub-DeepDream%20Tricks-green?logo=github"
-    alt="DeepDream Tricks GitHub"/>
-  </a>
-</div>
-
-3. _[DeepDream Guided](3-deepdream-guided.ipynb)_ - Discover how we can transfer features from one image to another.
-
-    **[GUIDED IMAGES PLACEHOLDER]**
-
-<div align="center">
-  <a href="https://www.kaggle.com/code/vladislavlassa/deepdream-guided">
-    <img src="https://img.shields.io/badge/Kaggle-DeepDream%20Guided-blue?logo=kaggle"
-    alt="DeepDream Guided"/>
-  </a>
-  <a href="deepdream-guided.ipynb">
-    <img src="https://img.shields.io/badge/GitHub-DeepDream%20Guided-green?logo=github"
-    alt="DeepDream Guided GitHub"/>
-  </a>
-</div>
+| Notebook | Kaggle | GitHub |
+|----------|--------|--------|
+| **1. _DeepDream Starter_** - No Image Pyramid or Gradient Smoothing. Gradient ascent is _all_ you need to start dreaming... | <a href="https://www.kaggle.com/code/vladislavlassa/deepdream-starter"><img src="https://img.shields.io/badge/Kaggle-DeepDream%20Starter-blue?logo=kaggle" alt="DeepDream Starter"/></a> | <a href="deepdream-starter.ipynb"><img src="https://img.shields.io/badge/GitHub-DeepDream%20Starter-green?logo=github" alt="DeepDream Starter GitHub"/></a> |
+| **2. _DeepDream Tricks_** - Playing with different settings from gradient smoothing to image pyramid! | <a href="https://www.kaggle.com/code/vladislavlassa/deepdream-tricks"><img src="https://img.shields.io/badge/Kaggle-DeepDream%20Tricks-blue?logo=kaggle" alt="DeepDream Tricks"/></a> | <a href="deepdream-tricks.ipynb"><img src="https://img.shields.io/badge/GitHub-DeepDream%20Tricks-green?logo=github" alt="DeepDream Tricks GitHub"/></a> |
+| **3. _DeepDream Guided_** - Discover how we can transfer features from one image to another. | <a href="https://www.kaggle.com/code/vladislavlassa/deepdream-guided"><img src="https://img.shields.io/badge/Kaggle-DeepDream%20Guided-blue?logo=kaggle" alt="DeepDream Guided"/></a> | <a href="deepdream-guided.ipynb"><img src="https://img.shields.io/badge/GitHub-DeepDream%20Guided-green?logo=github" alt="DeepDream Guided GitHub"/></a> |
 
 ## Run Locally
 
