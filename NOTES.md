@@ -53,9 +53,9 @@ Random stuff
 
 TODO
 ---
-- refactor `DeepDream.dream` as `dream` and `dream_guided`
-- add tests:
-  - deepdream: **(at least try different configurations using hypothesis)**
+- ~~refactor `DeepDream.dream` as `dream` and `dream_guided`~~
+- ~~add tests:~~
+  - ~~deepdream: **(at least try different configurations using hypothesis)**~~
   - ~~img~~
 - add badges: tests from gh actions + test coverage
 - local notebooks (github notebooks)
