@@ -23,9 +23,6 @@ This project offers two key features:
   <a href="https://github.com/Lassa30/deepdreaming/actions/workflows/tests.yml">
     <img src="https://github.com/Lassa30/deepdreaming/actions/workflows/tests.yml/badge.svg?event=push" alt="Tests"/>
   </a>
-  <a href="https://github.com/Lassa30/deepdreaming/actions/workflows/coverage.yml">
-    <img src="https://raw.githubusercontent.com/Lassa30/deepdreaming/main/coverage.svg" alt="Test Coverage"/>
-  </a>
 </div>
 
 ## Getting Started

@@ -57,8 +57,10 @@ TODO
 - ~~add tests:~~
   - ~~deepdream: **(at least try different configurations using hypothesis)**~~
   - ~~img~~
-- add badges: tests from gh actions + test coverage
-- local notebooks (github notebooks)
-  - trick
-  - guided
+- add badges: 
+  - ~~tests~~
+  - coverage
+- ~~local notebooks (github notebooks)~~
+  - ~~trick~~
+  - ~~guided~~
 - kaggle notebooks
