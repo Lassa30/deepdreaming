@@ -9,7 +9,7 @@ from . import img
 from .constants import IMAGE_NET_SHAPE
 
 
-def read_image_net_classes(filepath):
+def read_image_net_classes(filepath: str):
     """Read ImageNet class labels from text file and return as dictionary.
 
     Args:
@@ -36,7 +36,7 @@ def read_image_net_classes(filepath):
     return result
 
 
-def two_max_divisors(n) -> tuple[int, int]:
+def two_max_divisors(n: int) -> tuple[int, int]:
     """Find two divisors of n that are closest to each other for grid layout.
 
     Args:

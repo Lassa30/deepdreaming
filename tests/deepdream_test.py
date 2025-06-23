@@ -1,12 +1,11 @@
-import pytest
 import numpy as np
-from hypothesis import given, settings, strategies as st
+from hypothesis import given, settings
+from hypothesis import strategies as st
 from hypothesis.strategies import composite
-import torch
 from torchvision.models import resnet18
 
-from deepdreaming.deepdream import DeepDream
 from deepdreaming.config import DreamConfig, GradSmoothingMode
+from deepdreaming.deepdream import DeepDream
 
 
 @composite

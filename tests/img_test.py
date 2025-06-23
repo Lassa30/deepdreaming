@@ -66,7 +66,9 @@ class TestImgProc:
 
         # discard preprocessing
         discard_pp_image = proc.discard_pre_processing(pp_image)
-        assert np.allclose(discard_pp_image, static_image, atol=1e-5), "Discarding pre-processing should recover the original image."
+        assert np.allclose(
+            discard_pp_image, static_image, atol=1e-5
+        ), "Discarding pre-processing should recover the original image."
 
     def test_convert_to_smth(self, static_image):
         """

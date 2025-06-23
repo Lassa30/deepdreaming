@@ -13,6 +13,11 @@ dependencies = [
     "matplotlib",
     "opencv-python-headless",
     "ipykernel",
+]
+requires-python = ">= 3.10"
+
+[project.optional-dependencies]
+dev = [
     "hypothesis[pytest]",
     "pytest-cov",
     "black[jupyter]",
@@ -21,23 +26,28 @@ dependencies = [
     "ruff",
     "tox"
 ]
-requires-python = ">= 3.10"
 
 [tool.pytest.ini_options]
 addopts = "--cov=deepdreaming"
+
 testpaths = [
     "tests",
 ]
 
+[tool.coverage.run]
+omit = [
+    "deepdreaming/utils.py" # no need to test it
+]
+
 [tool.black]
-line-length = 120
+line-length = 119
 target-version = ['py312']
 
 [tool.isort]
 profile = "black"
 
 [tool.ruff]
-line-length = 120
+line-length = 119
 
 [tool.mypy]
 disable_error_code = ["import-untyped"]

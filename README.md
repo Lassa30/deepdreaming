@@ -15,6 +15,15 @@ A PyTorch implementation of the [**DeepDream algorithm**](https://en.wikipedia.o
 
 DeepDream is a _fascinating_ computer vision algorithm that creates dreamlike hallucinogenic appearances in images. While there are many great implementations available, I wanted to create something more accessible and user-friendly.
 
+<div align="center">
+  <a href="https://github.com/Lassa30/deepdreaming/actions/workflows/tests.yml">
+    <img src="https://github.com/Lassa30/deepdreaming/actions/workflows/tests.yml/badge.svg?event=push" alt="Tests"/>
+  </a>
+  <a href="https://codecov.io/gh/Lassa30/deepdreaming">
+    <img src="https://codecov.io/gh/Lassa30/deepdreaming/branch/main/graph/badge.svg" alt="Test Coverage"/>
+  </a>
+</div>
+
 This project offers two key features:
 1. A simple web interface built with `Streamlit` where anyone can experiment with DeepDream without writing code
 2. A cleaner implementation of layer access in PyTorch using _forward hooks_ rather than hardcoded model redefinition. With this approach you could use **any pretrained model** not only the couple of hardcoded!
@@ -23,7 +32,7 @@ This project offers two key features:
 
 There are two ways to experience `DeepDreaming`:
 1. Play with the Streamlit demo
-2. Dream deeper with Jupyter Notebooks (also available on Kaggle)
+2. Dream deeper with Jupyter Notebooks
 
 Each approach has detailed guides below. Remember that DeepDream doesn't have a one-size-fits-all configuration - you'll get the **best results** by experimenting with different settings for each image!
 
@@ -35,7 +44,7 @@ Each approach has detailed guides below. Remember that DeepDream doesn't have a 
 
 <div align="center">
   <a href="https://deepdreaming.streamlit.app/">
-    <img src="https://img.shields.io/badge/Streamlit-DeepDreaming%20App-FF4B4B?logo=streamlit&logoColor=white"
+    <img src="https://img.shields.io/badge/Streamlit-DeepDreaming%20App-0066ff?logo=streamlit&logoColor=white"
     alt="Streamlit DeepDreaming App"/>
   </a>
 </div>
@@ -60,17 +69,19 @@ Help page is also present. Click here to gain more intuition about parameters av
 
 The notebooks in this repository come pre-executed, making them the _quickest way_ to see DeepDream in action. You can view all the outputs directly in your browser without running any code yourself. They're perfect for getting a quick understanding of what's possible with this implementation.
 
-### Kaggle Notebooks
-
-The Kaggle notebooks serve as _interactive tutorials_ that walk you through the implementation step by step. They contain the same content as the GitHub notebooks but with more detailed explanations and no imported code. If you want to understand how you could possibly implement DeepDream by yourself, these are your **best starting point**!
-
 ### Links
 
-| Notebook | Kaggle | GitHub |
-|----------|--------|--------|
-| **1. _DeepDream Starter_** - No Image Pyramid or Gradient Smoothing. Gradient ascent is _all_ you need to start dreaming... | <a href="https://www.kaggle.com/code/vladislavlassa/deepdream-starter"><img src="https://img.shields.io/badge/Kaggle-DeepDream%20Starter-blue?logo=kaggle" alt="DeepDream Starter"/></a> | No |
-| **2. _DeepDream Tricks_** - Playing with different settings from gradient smoothing to image pyramid! | <a href="https://www.kaggle.com/code/vladislavlassa/deepdream-tricks"><img src="https://img.shields.io/badge/Kaggle-DeepDream%20Tricks-blue?logo=kaggle" alt="DeepDream Tricks"/></a> | <a href="deepdream-tricks.ipynb"><img src="https://img.shields.io/badge/GitHub-DeepDream%20Tricks-green?logo=github" alt="DeepDream Tricks GitHub"/></a> |
-| **3. _DeepDream Guided_** - Discover how we can transfer features from one image to another. | <a href="https://www.kaggle.com/code/vladislavlassa/deepdream-guided"><img src="https://img.shields.io/badge/Kaggle-DeepDream%20Guided-blue?logo=kaggle" alt="DeepDream Guided"/></a> | <a href="deepdream-guided.ipynb"><img src="https://img.shields.io/badge/GitHub-DeepDream%20Guided-green?logo=github" alt="DeepDream Guided GitHub"/></a> |
+<div align="center">
+  <p><strong>1. <em>DeepDream Tricks</em></strong> - Playing with different settings from gradient smoothing to image pyramid!</p>
+  <a href="deepdream-tricks.ipynb">
+    <img src="https://img.shields.io/badge/GitHub-DeepDream%20Tricks-0066ff?logo=github" alt="DeepDream Tricks GitHub"/>
+  </a>
+  <br><br>
+  <p><strong>3. <em>DeepDream Guided</em></strong> - Discover how we can transfer features from one image to another.</p>
+  <a href="deepdream-guided.ipynb">
+    <img src="https://img.shields.io/badge/GitHub-DeepDream%20Guided-0066ff?logo=github" alt="DeepDream Guided GitHub"/>
+  </a>
+</div>
 
 ## Run Locally
 
@@ -102,6 +113,6 @@ This project has been tested with `Python 3.12.3`, but should work with other re
 ## License
 <div align="center">
     <a href="https://github.com/Lassa30/deepdreaming/blob/main/LICENSE">
-        <img src="https://img.shields.io/badge/License-MIT-blue.svg">
+        <img src="https://img.shields.io/badge/License-MIT-0066ff.svg">
     </a>
 </div>

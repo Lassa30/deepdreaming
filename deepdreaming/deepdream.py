@@ -1,5 +1,4 @@
 import re
-from typing import Optional
 
 import numpy as np
 import torch
@@ -182,10 +181,10 @@ class DeepDream:
             for _ in range(config.num_iter):
                 # Apply shift to both tensors
                 DeepDream._shift_tensors(input_tensor, reference_tensor, random_shift.shift)
-                
+
                 # Guided optimization step
                 self._optimize_guided(input_tensor, reference_tensor, optimizer, config)
-                
+
                 # Shift back and update random shift
                 DeepDream._shift_tensors(input_tensor, reference_tensor, random_shift.shift_back)
                 random_shift.update_random_shift()
@@ -201,41 +200,43 @@ class DeepDream:
         """Perform one standard gradient ascent step to maximize layer activations."""
         self.activations = []
         optimizer.zero_grad()
-        
+
         # Forward pass and compute loss
         self.model(input_tensor)
         losses = [torch.norm(activation.flatten(), 2) for activation in self.activations]
         loss = torch.mean(torch.stack(losses))
         loss.backward()
-        
+
         # Process gradients
         self._process_gradients(input_tensor, config)
-        
+
         # Update tensor
         optimizer.step()
 
-    def _optimize_guided(self, input_tensor: torch.Tensor, reference_tensor: torch.Tensor, optimizer, config: DreamConfig) -> None:
+    def _optimize_guided(
+        self, input_tensor: torch.Tensor, reference_tensor: torch.Tensor, optimizer, config: DreamConfig
+    ) -> None:
         """Perform one guided gradient ascent step using reference image."""
         self.activations = []
         optimizer.zero_grad()
-        
+
         # Get reference activations
         ref_activations = self._get_reference_image_activations(reference_tensor)
-        
+
         # Forward pass with input image
         self.model(input_tensor)
-        
+
         # Compute guided gradients
         gradients = DeepDream._objective_guide(self.activations, ref_activations)
         for act, grad in zip(self.activations, gradients):
             act.backward(grad, retain_graph=True)
-        
+
         # Process gradients
         self._process_gradients(input_tensor, config)
-        
+
         # Update tensor
         optimizer.step()
-    
+
     def _process_gradients(self, input_tensor: torch.Tensor, config: DreamConfig) -> None:
         """Apply smoothing and normalization to gradients."""
         # Check `config.py` and `smoothing.py` to see how it works
