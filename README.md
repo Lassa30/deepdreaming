@@ -15,18 +15,18 @@ A PyTorch implementation of the [**DeepDream algorithm**](https://en.wikipedia.o
 
 DeepDream is a _fascinating_ computer vision algorithm that creates dreamlike hallucinogenic appearances in images. While there are many great implementations available, I wanted to create something more accessible and user-friendly.
 
+This project offers two key features:
+1. A simple web interface built with `Streamlit` where anyone can experiment with DeepDream without writing code
+2. A cleaner implementation of layer access in PyTorch using _forward hooks_ rather than hardcoded model redefinition. With this approach you could use **any pretrained model** not only the couple of hardcoded!
+
 <div align="center">
   <a href="https://github.com/Lassa30/deepdreaming/actions/workflows/tests.yml">
     <img src="https://github.com/Lassa30/deepdreaming/actions/workflows/tests.yml/badge.svg?event=push" alt="Tests"/>
   </a>
-  <a href="https://codecov.io/gh/Lassa30/deepdreaming">
-    <img src="https://codecov.io/gh/Lassa30/deepdreaming/branch/main/graph/badge.svg" alt="Test Coverage"/>
+  <a href="https://github.com/Lassa30/deepdreaming/actions/workflows/coverage.yml">
+    <img src="https://raw.githubusercontent.com/Lassa30/deepdreaming/main/coverage.svg" alt="Test Coverage"/>
   </a>
 </div>
-
-This project offers two key features:
-1. A simple web interface built with `Streamlit` where anyone can experiment with DeepDream without writing code
-2. A cleaner implementation of layer access in PyTorch using _forward hooks_ rather than hardcoded model redefinition. With this approach you could use **any pretrained model** not only the couple of hardcoded!
 
 ## Getting Started
 
