@@ -3,10 +3,7 @@ env_list = ["lint", "type", "format", "3.12"]
 
 [env_run_base]
 description = "run unit tests"
-deps = [
-    "pytest",
-    "pytest-cov"
-]
+deps = { package-extras = ["dev"] }
 commands = [["pytest", { replace = "posargs", default = ["tests"], extend = true }]]
 
 [env.lint]
