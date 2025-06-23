@@ -56,7 +56,7 @@ class ImagePyramid:
             Returns shape tuples only - actual image resizing must be done separately.
         """
         while self.exponent >= 0:
-            next_shape = np.round(np.float32(self.shape[:2]) * np.pow(self.ratio, self.exponent)).astype(np.int32)
+            next_shape = np.round(np.float32(self.shape[:2]) * np.power(self.ratio, self.exponent)).astype(np.int32)
             if next_shape.min() < ImagePyramid.MIN_SIZE:
                 raise RuntimeError(
                     """
