@@ -4,11 +4,9 @@ import torch
 from torchvision.transforms import ToTensor
 
 from deepdreaming.constants import IMAGE_NET_MEAN, IMAGE_NET_STD
-from deepdreaming.utils import return_none
 
 
-@return_none
-def pre_process_image(image):
+def pre_process_image(image: np.ndarray):
     """Normalize image using ImageNet statistics for neural network input.
 
     Args:
@@ -18,12 +16,11 @@ def pre_process_image(image):
         np.ndarray: Normalized image with ImageNet mean subtracted and scaled by ImageNet std.
                    Values will be approximately in [-2, 2] range after normalization.
     """
-    image = (image - IMAGE_NET_MEAN) / IMAGE_NET_STD
-    return image
+
+    return (image - IMAGE_NET_MEAN) / IMAGE_NET_STD
 
 
-@return_none
-def discard_pre_processing(image):
+def discard_pre_processing(image: np.ndarray) -> np.ndarray:
     """Reverse ImageNet normalization to restore original pixel value range.
 
     Args:
@@ -32,12 +29,10 @@ def discard_pre_processing(image):
     Returns:
         np.ndarray: Denormalized image with values restored to [0, 1] range.
     """
-    image = image * IMAGE_NET_STD + IMAGE_NET_MEAN
-    return image
+    return image * IMAGE_NET_STD + IMAGE_NET_MEAN
 
 
-@return_none
-def to_tensor(image) -> torch.Tensor:
+def to_tensor(image: np.ndarray) -> torch.Tensor:
     """Convert numpy image to PyTorch tensor with batch dimension and move to device.
 
     Args:
@@ -48,12 +43,11 @@ def to_tensor(image) -> torch.Tensor:
                      Channel order is converted from HWC to CHW format.
     """
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    image_tensor = ToTensor()(image).unsqueeze(0).to(device)
-    return image_tensor
+    tensor = ToTensor()(image).unsqueeze(0).to(device)
+    return tensor
 
 
-@return_none
-def to_image(tensor):
+def to_image(tensor: torch.Tensor) -> np.ndarray:
     """Convert PyTorch tensor back to numpy image format.
 
     Args:
@@ -63,12 +57,14 @@ def to_image(tensor):
         np.ndarray: Image array with shape (H, W, C) on CPU as numpy array.
                    Channel order is converted from CHW to HWC format.
     """
+    if tensor.dim() == 3:
+        tensor = tensor.unsqueeze(0)
+
     image = tensor.squeeze(0).permute(1, 2, 0)
     return image.detach().cpu().numpy()
 
 
-@return_none
-def to_cv(image):
+def to_cv(image: np.ndarray) -> cv.typing.MatLike:
     """Convert image to OpenCV format for saving or display.
 
     Args:
@@ -83,8 +79,7 @@ def to_cv(image):
     return image
 
 
-@return_none
-def reshape_image(image, shape):
+def reshape_image(image: np.ndarray, shape: tuple[int, int]) -> cv.typing.MatLike:
     """Resize image to specified dimensions using OpenCV.
 
     Args:

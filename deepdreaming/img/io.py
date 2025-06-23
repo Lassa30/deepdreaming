@@ -1,10 +1,11 @@
 import os
+from typing import Optional
 
 import cv2 as cv
 import numpy as np
 
 
-def read_image(image_path, target_size=None):
+def read_image(image_path: str, target_size: Optional[tuple[int, int, int]] = None) -> np.ndarray:
     """Read and preprocess image file for DeepDream processing.
 
     Args:
@@ -35,10 +36,10 @@ def read_image(image_path, target_size=None):
     image = cv.imread(image_path)[:, :, ::-1]  # BGR to RGB
 
     if target_size is not None:
-        if isinstance(target_size, tuple):
-            dim1, dim2, _ = target_size
-            image = cv.resize(image, (dim2, dim1))
-        else:
-            raise Exception("Tuple is expected as a target_size argument type.")
+        assert isinstance(target_size, tuple), "Tuple is expected as a target_size argument type."
+        assert len(target_size) in [2, 3], "Please provide from 2 to 3 values as a target_shape."
+
+        dim1, dim2 = target_size[:2]
+        image = cv.resize(image, (dim2, dim1))
 
     return image.astype(np.float32) / 255.0

@@ -40,31 +40,25 @@ class DeepDream:
     def dream(
         self,
         input_image: np.ndarray,
-        reference_image: Optional[np.ndarray] = None,
         config: DreamConfig = DreamConfig(),
     ) -> np.ndarray:
         """Generate DeepDream visualization from input image.
 
-        This is the main method that applies the DeepDream algorithm to transform an input
+        This method applies the standard DeepDream algorithm to transform an input
         image into a dream-like visualization. The process works by:
         1. Creating an image pyramid for multi-scale processing
         2. For each pyramid level, iteratively optimizing the image to maximize activations
         3. Applying random shifts and gradient processing for better results
-        4. Optionally using a reference image to guide the dreaming process
 
         Args:
             input_image (np.ndarray): Input image to transform, shape (H, W, C) with values in [0, 1].
                                     Must be np.float32 type. Use img.io.read_image() for proper format.
-            reference_image (np.ndarray, optional): Reference image for guided dreaming.
-                                                   If provided, the algorithm will try to transfer
-                                                   patterns from this image to the input image.
-                                                   Must be same format as input_image (np.float32, [0,1]).
             config (DreamConfig, optional): Configuration object containing all hyperparameters.
                                           Uses default settings if not provided.
 
         Returns:
             np.ndarray: Transformed dream image with same dimensions as input, values in [0, 1].
-                       The output shows amplified or transferred patterns based on the target layers.
+                       The output shows amplified patterns based on the target layers.
 
         Examples:
             >>> from torchvision.models import vgg16, VGG16_Weights
@@ -76,10 +70,6 @@ class DeepDream:
             >>> deepdream = dd.DeepDream(model, ["features.25", "features.27"])
             >>> image = img.io.read_image("path/to/image.jpg", (224, 224, 3))
             >>> result = deepdream.dream(image)
-
-            # Guided DeepDream with reference image
-            >>> reference = img.io.read_image("path/to/reference.jpg", (224, 224, 3))
-            >>> result = deepdream.dream(image, reference)
 
             # With custom configuration
             >>> config = DreamConfig(
@@ -100,6 +90,82 @@ class DeepDream:
         self._register_hooks()
 
         input_img = img.proc.pre_process_image(input_image)
+        random_shift = shift.RandomShift(config.shift_size)
+        image_pyramid = pyramid.ImagePyramid(input_image.shape, config.pyramid_layers, config.pyramid_ratio)
+
+        for new_shape in image_pyramid:
+            input_img = img.proc.reshape_image(input_img, new_shape)
+            input_tensor = img.proc.to_tensor(input_img).requires_grad_(True)
+
+            optimizer = config.optimizer_class([input_tensor], lr=config.learning_rate, maximize=True)
+            for _ in range(config.num_iter):
+                input_tensor.data.copy_(random_shift.shift(input_tensor))
+
+                # Standard DeepDream optimization step
+                self._optimize_standard(input_tensor, optimizer, config)
+
+                input_tensor.data.copy_(random_shift.shift_back(input_tensor))
+                random_shift.update_random_shift()
+
+            input_img = img.proc.to_image(input_tensor)
+
+        # Clear and Return
+        self._remove_hooks()
+        output_img = DeepDream._prepare_output_image(input_tensor)
+        return output_img
+
+    def dream_guided(
+        self,
+        input_image: np.ndarray,
+        reference_image: np.ndarray,
+        config: DreamConfig = DreamConfig(),
+    ) -> np.ndarray:
+        """Generate guided DeepDream visualization from input image and reference image.
+
+        This method applies the guided DeepDream algorithm to transform an input image using
+        patterns from a reference image. The process works by:
+        1. Creating an image pyramid for multi-scale processing
+        2. For each pyramid level, iteratively optimizing the input image based on reference patterns
+        3. Applying random shifts and gradient processing for better results
+
+        Args:
+            input_image (np.ndarray): Input image to transform, shape (H, W, C) with values in [0, 1].
+                                    Must be np.float32 type. Use img.io.read_image() for proper format.
+            reference_image (np.ndarray): Reference image for guided dreaming.
+                                         The algorithm will try to transfer patterns
+                                         from this image to the input image.
+                                         Must be same format as input_image (np.float32, [0,1]).
+            config (DreamConfig, optional): Configuration object containing all hyperparameters.
+                                          Uses default settings if not provided.
+
+        Returns:
+            np.ndarray: Transformed dream image with same dimensions as input, values in [0, 1].
+                       The output shows transferred patterns from the reference image.
+
+        Examples:
+            >>> from torchvision.models import vgg16, VGG16_Weights
+            >>> from deepdreaming import img, deepdream as dd
+            >>> from deepdreaming.config import DreamConfig
+
+            # Guided DeepDream with reference image
+            >>> model = vgg16(weights=VGG16_Weights.IMAGENET1K_V1).eval()
+            >>> deepdream = dd.DeepDream(model, ["features.25", "features.27"])
+            >>> image = img.io.read_image("path/to/image.jpg", (224, 224, 3))
+            >>> reference = img.io.read_image("path/to/reference.jpg", (224, 224, 3))
+            >>> result = deepdream.dream_guided(image, reference)
+
+            # With custom configuration
+            >>> config = DreamConfig(
+            ...     pyramid_layers=4,
+            ...     num_iterations=15,
+            ...     learning_rate=0.08,
+            ...     gradient_norm=True
+            ... )
+            >>> result = deepdream.dream_guided(image, reference, config=config)
+        """
+        self._register_hooks()
+
+        input_img = img.proc.pre_process_image(input_image)
         reference_img = img.proc.pre_process_image(reference_image)
 
         random_shift = shift.RandomShift(config.shift_size)
@@ -109,15 +175,18 @@ class DeepDream:
             input_img = img.proc.reshape_image(input_img, new_shape)
             input_tensor = img.proc.to_tensor(input_img).requires_grad_(True)
 
-            reference_img = img.proc.reshape_image(reference_image, new_shape)
+            reference_img = img.proc.reshape_image(reference_img, new_shape)
             reference_tensor = img.proc.to_tensor(reference_img)
 
             optimizer = config.optimizer_class([input_tensor], lr=config.learning_rate, maximize=True)
             for _ in range(config.num_iter):
+                # Apply shift to both tensors
                 DeepDream._shift_tensors(input_tensor, reference_tensor, random_shift.shift)
-
-                self._gradient_ascend_step(optimizer, input_tensor, reference_tensor, config)
-
+                
+                # Guided optimization step
+                self._optimize_guided(input_tensor, reference_tensor, optimizer, config)
+                
+                # Shift back and update random shift
                 DeepDream._shift_tensors(input_tensor, reference_tensor, random_shift.shift_back)
                 random_shift.update_random_shift()
 
@@ -128,33 +197,50 @@ class DeepDream:
         output_img = DeepDream._prepare_output_image(input_tensor)
         return output_img
 
-    def _gradient_ascend_step(
-        self,
-        optimizer,
-        input_tensor: torch.Tensor,
-        reference_tensor: Optional[torch.Tensor] = None,
-        config: DreamConfig = DreamConfig(),
-    ) -> None:
-        """Perform one gradient ascent step to maximize layer activations."""
+    def _optimize_standard(self, input_tensor: torch.Tensor, optimizer, config: DreamConfig) -> None:
+        """Perform one standard gradient ascent step to maximize layer activations."""
         self.activations = []
         optimizer.zero_grad()
-        if reference_tensor is not None:
-            ref_activations = self._get_reference_image_activations(reference_tensor)
-            self.model(input_tensor)
-            gradients = DeepDream._objective_guide(self.activations, ref_activations)
-            for act, grad in zip(self.activations, gradients):
-                act.backward(grad, retain_graph=True)
-        else:
-            self.model(input_tensor)
-            losses = [torch.norm(activation.flatten(), 2) for activation in self.activations]
-            loss = torch.mean(torch.stack(losses))
-            loss.backward()
+        
+        # Forward pass and compute loss
+        self.model(input_tensor)
+        losses = [torch.norm(activation.flatten(), 2) for activation in self.activations]
+        loss = torch.mean(torch.stack(losses))
+        loss.backward()
+        
+        # Process gradients
+        self._process_gradients(input_tensor, config)
+        
+        # Update tensor
+        optimizer.step()
 
+    def _optimize_guided(self, input_tensor: torch.Tensor, reference_tensor: torch.Tensor, optimizer, config: DreamConfig) -> None:
+        """Perform one guided gradient ascent step using reference image."""
+        self.activations = []
+        optimizer.zero_grad()
+        
+        # Get reference activations
+        ref_activations = self._get_reference_image_activations(reference_tensor)
+        
+        # Forward pass with input image
+        self.model(input_tensor)
+        
+        # Compute guided gradients
+        gradients = DeepDream._objective_guide(self.activations, ref_activations)
+        for act, grad in zip(self.activations, gradients):
+            act.backward(grad, retain_graph=True)
+        
+        # Process gradients
+        self._process_gradients(input_tensor, config)
+        
+        # Update tensor
+        optimizer.step()
+    
+    def _process_gradients(self, input_tensor: torch.Tensor, config: DreamConfig) -> None:
+        """Apply smoothing and normalization to gradients."""
         # Check `config.py` and `smoothing.py` to see how it works
         self._gradient_smoothing(input_tensor, config)
         self._gradient_normalization(input_tensor, config)
-
-        optimizer.step()
 
     @staticmethod
     def _objective_guide(current_acts, guide_acts) -> list[torch.Tensor]:
