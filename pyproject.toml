@@ -59,6 +59,42 @@ exclude = [
 where = ["."]
 include = ["deepdreaming", "app"]
 
-[testenv]
-deps = ["pytest", "hypothesis"]
-commands = ["pytest"]
+[tool.tox]
+requires = ["tox>=4"]
+env_list = ["lint", "type", "format", "3.12"]
+
+[tool.tox.env_run_base]
+description = "run unit tests"
+extras = ["dev"]
+commands = [
+    ["pytest", "tests"]
+]
+
+[tool.tox.env.lint]
+description = "run linters"
+skip_install = false
+deps = [
+    "ruff",
+]
+commands = [
+    ["ruff", "check", "."]
+]
+
+[tool.tox.env.format]
+description = "run code formatters"
+skip_install = false
+deps = [
+    "black",
+    "isort",
+]
+commands = [
+    ["black", "--check", "."],
+    ["isort", "--check", "."]
+]
+
+[tool.tox.env.type]
+description = "run type checks"
+deps = ["mypy"]
+commands = [
+    ["mypy", "."]
+]
