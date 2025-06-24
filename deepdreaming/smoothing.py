@@ -149,7 +149,9 @@ def gaussian_smoothing(
 
     output_tensor = torch.zeros_like(input=input_tensor, device=padded_input_tensor.device)
     for blending_weight, kernel in zip(blending_weights, kernels):
-        output_tensor += blending_weight * F.conv2d(padded_input_tensor, kernel, groups=C)
+        output_tensor += blending_weight * F.conv2d(
+            padded_input_tensor, kernel.to(padded_input_tensor.device), groups=C
+        )
     return output_tensor
 
 
