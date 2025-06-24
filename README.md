@@ -62,23 +62,35 @@ Help page is also present. Click here to gain more intuition about parameters av
 
 ## Notebooks
 
-### GitHub Notebooks
-
-The notebooks in this repository come pre-executed, making them the _quickest way_ to see DeepDream in action. You can view all the outputs directly in your browser without running any code yourself. They're perfect for getting a quick understanding of what's possible with this implementation.
-
-### Links
+### Kaggle Notebooks
 
 <div align="center">
-  <p><strong>1. <em>DeepDream Tricks</em></strong> - Playing with different settings from gradient smoothing to image pyramid!</p>
-  <a href="deepdream-tricks.ipynb">
-    <img src="https://img.shields.io/badge/GitHub-DeepDream%20Tricks-0066ff?logo=github" alt="DeepDream Tricks GitHub"/>
+  <p><strong>1. <em>DeepDream Starter</em></strong> - Get started with the basic implementation and concepts!</p>
+  <a href="https://www.kaggle.com/code/vladislavlassa/deepdream-starter">
+    <img src="https://img.shields.io/badge/Kaggle-DeepDream%20Starter-0066ff?logo=kaggle" alt="DeepDream Starter Kaggle"/>
+  </a>
+  <br><br>
+  <p><strong>2. <em>DeepDream Tricks</em></strong> - Playing with different settings from gradient smoothing to image pyramid!</p>
+  <a href="https://www.kaggle.com/code/vladislavlassa/deepdream-tricks">
+    <img src="https://img.shields.io/badge/Kaggle-DeepDream%20Tricks-0066ff?logo=kaggle" alt="DeepDream Tricks Kaggle"/>
   </a>
   <br><br>
   <p><strong>3. <em>DeepDream Guided</em></strong> - Discover how we can transfer features from one image to another.</p>
-  <a href="deepdream-guided.ipynb">
-    <img src="https://img.shields.io/badge/GitHub-DeepDream%20Guided-0066ff?logo=github" alt="DeepDream Guided GitHub"/>
+  <a href="https://www.kaggle.com/code/vladislavlassa/deepdream-guided">
+    <img src="https://img.shields.io/badge/Kaggle-DeepDream%20Guided-0066ff?logo=kaggle" alt="DeepDream Guided Kaggle"/>
   </a>
 </div>
+
+### GitHub Notebooks
+
+The notebook files in this repository are not pre-executed, as executing them would make the files too large to be displayed properly on GitHub. If you want to see the outputs, please use the Kaggle notebooks linked above or clone the repository and run them locally. Remember that each notebook needs to be configured with paths to input image directories before running.
+
+Source notebooks available in this repository:
+- [DeepDream Tricks](deepdream-tricks.ipynb) - Explore various techniques to enhance your DeepDream outputs
+- [DeepDream Guided](deepdream-guided.ipynb) - Learn how to transfer features between images
+
+There is one pre-executed notebook available in a separate branch:
+- [DeepDream Starter](https://github.com/Lassa30/deepdreaming/blob/basic-deepdream/deepdream-starter.ipynb) - A beginner-friendly introduction to the DeepDream algorithm with outputs visible
 
 ## Run Locally
 
