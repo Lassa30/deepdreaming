@@ -129,8 +129,10 @@ cd deepdreaming
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 
-# 3. Install dependencies
-pip install -r requirements.txt
+# 3. Install the package and dependencies
+pip install .            # Install the package in standard mode
+# OR for development mode:
+pip install -e .         # Install in editable mode for development
 
 # 4. Run the Streamlit app
 streamlit run app/main.py
