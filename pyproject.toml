@@ -53,6 +53,7 @@ line-length = 119
 disable_error_code = ["import-untyped"]
 exclude = [
     ".venv/",
+    "build/",
 ]
 
 [tool.setuptools.packages.find]
