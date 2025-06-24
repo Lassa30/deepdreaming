@@ -63,22 +63,46 @@ Help page is also present. Click here to gain more intuition about parameters av
 ## Notebooks
 
 ### Kaggle Notebooks
-
 <div align="center">
   <p><strong>1. <em>DeepDream Starter</em></strong> - Get started with the basic implementation and concepts!</p>
   <a href="https://www.kaggle.com/code/vladislavlassa/deepdream-starter">
     <img src="https://img.shields.io/badge/Kaggle-DeepDream%20Starter-0066ff?logo=kaggle" alt="DeepDream Starter Kaggle"/>
   </a>
   <br><br>
+  <img src="assets/starter_space.jpeg" width="400" height="400" />
+  <img src="assets/starter_yoda.jpeg" width="400" height="400" />
+  <img src="assets/starter_vader.jpeg" width="400" height="400" />
   <p><strong>2. <em>DeepDream Tricks</em></strong> - Playing with different settings from gradient smoothing to image pyramid!</p>
   <a href="https://www.kaggle.com/code/vladislavlassa/deepdream-tricks">
     <img src="https://img.shields.io/badge/Kaggle-DeepDream%20Tricks-0066ff?logo=kaggle" alt="DeepDream Tricks Kaggle"/>
   </a>
   <br><br>
+  <img src="assets/tricks_bombordiro_crocodilo.jpg" width="400" height="400" />
+  <img src="assets/tricks_yoda.jpg" width="400" height="400" />
+  <img src="assets/tricks_tralalelo_tralala.jpg" width="400" height="400" />
+<div align="center">
   <p><strong>3. <em>DeepDream Guided</em></strong> - Discover how we can transfer features from one image to another.</p>
   <a href="https://www.kaggle.com/code/vladislavlassa/deepdream-guided">
     <img src="https://img.shields.io/badge/Kaggle-DeepDream%20Guided-0066ff?logo=kaggle" alt="DeepDream Guided Kaggle"/>
   </a>
+  <br><br>
+  <div>
+    <p style="font-size: 18px;">🌌 Space ➡️ Yoda 👽</p>
+    <img src="assets/guided_space_to_yoda.jpg" width="400" height="400" />
+  </div>
+  <div>
+    <p style="font-size: 18px;">🐊 Crocodilo ➡️ Space 🌌</p>
+    <img src="assets/guided_crocodilo_to_space.jpg" width="400" height="400" />
+  </div>
+  <div>
+    <p style="font-size: 18px;">🌳 Tree ➡️ Yoda 👽</p>
+    <img src="assets/guided_tree_to_yoda.jpg" width="400" height="400" />
+  </div>
+  <div>
+    <p style="font-size: 18px;">🐊 Crocodilo ➡️ Tree 🌳</p>
+    <img src="assets/guided_crocodilo_to_tree.jpg" width="400" height="400" />
+  </div>
+</div>
 </div>
 
 ### GitHub Notebooks
