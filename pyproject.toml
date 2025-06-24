@@ -72,7 +72,7 @@ commands = [
 
 [tool.tox.env.lint]
 description = "run linters"
-skip_install = false
+skip_install = true
 deps = [
     "ruff",
 ]
@@ -82,7 +82,7 @@ commands = [
 
 [tool.tox.env.format]
 description = "run code formatters"
-skip_install = false
+skip_install = true
 deps = [
     "black",
     "isort",
@@ -94,6 +94,7 @@ commands = [
 
 [tool.tox.env.type]
 description = "run type checks"
+skip_install = true
 deps = ["mypy"]
 commands = [
     ["mypy", "."]
