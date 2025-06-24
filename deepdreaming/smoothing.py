@@ -147,7 +147,7 @@ def gaussian_smoothing(
     pad = kernel_size // 2
     padded_input_tensor = F.pad(input_tensor, (pad, pad, pad, pad), mode=padding_mode)
 
-    output_tensor = torch.zeros_like(input=input_tensor)
+    output_tensor = torch.zeros_like(input=input_tensor, device=padded_input_tensor.device)
     for blending_weight, kernel in zip(blending_weights, kernels):
         output_tensor += blending_weight * F.conv2d(padded_input_tensor, kernel, groups=C)
     return output_tensor
@@ -178,7 +178,8 @@ def box_smoothing(input_tensor: torch.Tensor, kernel_size: int = 3, padding_mode
     C = input_tensor.shape[1]
 
     padding = kernel_size // 2
-    padded_image = F.pad(input_tensor, (padding, padding, padding, padding), mode=padding_mode)
-    weights = torch.ones(C, 1, kernel_size, kernel_size) / (kernel_size * kernel_size)
+    padded_input_tensor = F.pad(input_tensor, (padding, padding, padding, padding), mode=padding_mode)
+    weights = torch.ones(C, 1, kernel_size, kernel_size, device=padded_input_tensor.device)
+    weights /= kernel_size * kernel_size
 
-    return F.conv2d(padded_image, weights, groups=C)
+    return F.conv2d(padded_input_tensor, weights, groups=C)
